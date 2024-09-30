@@ -20,11 +20,26 @@
           <x-nav-item href="/" :active="request()->is('/')">Home</x-nav-item>
           <x-nav-item href="/about" :active="request()->is('about')">About</x-nav-item>
           <x-nav-item href="/contact" :active="request()->is('contact')">Contact</x-nav-item>
+          @auth
+            <x-nav-item href="/category" :active="request()->is('category')">Category</x-nav-item>    
+            <x-nav-item href="/account" :active="request()->is('account')">Account</x-nav-item>    
+            <x-nav-item href="/transaction" :active="request()->is('transaction')">Transaction</x-nav-item>    
+          @endauth
         </ul>
   
         <div class="col-md-3 text-end">
-          <button type="button" class="btn btn-outline-primary me-2">Login</button>
-          <button type="button" class="btn btn-primary">Sign-up</button>
+          <ul class="nav">
+          @guest
+            <x-nav-item href="{{ route('register.create') }}" :active="request()->is('register')">Register</x-nav-item>
+            <x-nav-item href="{{ route('login.create') }}" :active="request()->is('login')">Login</x-nav-item>
+          @endguest
+          @auth
+            <form action="{{ route('login.destroy') }}" method="POST">
+              @csrf
+              <x-nav-item class="text-danger" htmlTag='button'>Logout</x-nav-item>
+            </form>
+          @endauth
+          </ul>
         </div>
       </header>
     </div>

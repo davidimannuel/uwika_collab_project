@@ -1,4 +1,8 @@
-@props(['active' => false])
+@props(['active' => false, 'htmlTag' => 'a'])
+@php
+  $defaultClass = $active ? 'link-secondary' : '';
+  $defaultClass = 'nav-link px-2 '.$defaultClass;
+@endphp
 <li>
-  <a class="nav-link px-2 {{ $active ? 'link-secondary' : '' }}" {{ $attributes }}>{{ $slot }}</a>
+  <{{$htmlTag}}  {{ $attributes->merge(['class' => $defaultClass]) }}>{{ $slot }}</{{$htmlTag}}>
 </li>
