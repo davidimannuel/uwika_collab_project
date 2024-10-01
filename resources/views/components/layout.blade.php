@@ -12,9 +12,6 @@
     <div class="container">
       <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
         <div class="col-md-3 mb-2 mb-md-0">
-          {{-- <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-          </a> --}}
           <ul class="nav">
             <x-nav-item href="/" :active="request()->is('/')">Home</x-nav-item>
             <x-nav-item href="/about" :active="request()->is('about')">About</x-nav-item>
@@ -25,6 +22,7 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           @auth
             <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('category')">Category</x-nav-item>    
+            <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('account')">Account</x-nav-item>    
           @endauth
         </ul>
   
@@ -32,7 +30,7 @@
           <ul class="nav">
           @guest
             <x-nav-item href="{{ route('register.create') }}" :active="request()->is('register')">Register</x-nav-item>
-            <x-nav-item href="{{ route('login.create') }}" :active="request()->is('login')">Login</x-nav-item>
+            <x-nav-item href="{{ route('login') }}" :active="request()->is('login')">Login</x-nav-item>
           @endguest
           @auth
             <form action="{{ route('login.destroy') }}" method="POST">

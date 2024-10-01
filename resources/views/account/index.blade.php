@@ -1,9 +1,9 @@
 <x-layout>
   <x-slot:headingTitle>
-    Category
+    Account
   </x-slot>
   <div class="text-start">
-    <a href="{{ route('categories.create') }}" class="btn btn-success">Create</a>
+    <a href="{{ route('accounts.create') }}" class="btn btn-success">Create</a>
   </div>
   <div class="row">
     <div class="col-11">
@@ -18,15 +18,15 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($categories as $category)
+          @foreach ($accounts as $account)
           <tr>
             <th>{{ $loop->iteration }}</th>
-            <td>{{ $category->name }}</td>
-            <td>{{ $category->created_at }}</td>
-            <td>{{ $category->updated_at }}</td>
+            <td>{{ $account->name }}</td>
+            <td>{{ $account->created_at }}</td>
+            <td>{{ $account->updated_at }}</td>
             <td class="d-inline-flex">
-              <a href="{{ route('categories.edit',$category->id) }}" class="btn btn-primary me-1">Edit</a>
-              <form action="{{ route('categories.destroy',$category->id) }}" method="POST">
+              <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
+              <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-danger delete-btn">Delete</button>
@@ -38,7 +38,7 @@
       </table>
       {{-- pagination links --}}
       <div> 
-        {{ $categories->links() }}
+        {{ $accounts->links() }}
       </div>
     </div>
   </div>
