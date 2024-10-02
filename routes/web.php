@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DebtController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
@@ -41,6 +42,11 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/accounts/{account}/transactions',[AccountTransactionController::class, 'index'])->name('accounts.transactions.index');
   Route::get('/accounts/{account}/transactions/create',[AccountTransactionController::class, 'create'])->name('accounts.transactions.create');
   Route::post('/accounts/{account}/transactions',[AccountTransactionController::class, 'store'])->name('accounts.transactions.store');
+  // Debt
+  Route::get('/debts', [DebtController::class, 'index'])->name('debts.index');
+  Route::get('/debts/{debt:transaction_id}', [DebtController::class, 'show'])->name('debts.show');
+  Route::get('/debts/{debt:id}/repayments', [DebtController::class, 'createRepayment'])->name('debts.repayments.create');
+  Route::post('/debts/{debt:id}/repayments', [DebtController::class, 'storeRepayment'])->name('debts.repayments.store');
   // Transaction
   Route::get('/transactions',[TransactionController::class, 'index'])->name('transactions.index');
   Route::get('/transactions/create',[TransactionController::class, 'create'])->name('transactions.create');

@@ -6,7 +6,7 @@
     <a href="{{ route('categories.create') }}" class="btn btn-success">Create</a>
   </div>
   <div class="row">
-    <div class="col-11">
+    <div class="col-12">
       <table class="table table-hover">
         <thead>
           <tr>

@@ -20,6 +20,7 @@ return new class extends Migration
           $table->timestamp('transaction_at');
           $table->timestamps();
           $table->foreign('account_id')->references('id')->on('accounts');
+          $table->boolean('is_debt')->default(false); // for flagging debt transactions
         });
     }
 

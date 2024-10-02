@@ -1,11 +1,24 @@
 <x-layout>
   <x-slot:headingTitle>
-    Create transaction
+    Create repayment
   </x-slot>
-  <form method="POST" action="{{ route('accounts.transactions.store',$account->id) }}" >
+  <form method="POST" action="{{ route('debts.repayments.store',$debt->id) }}" >
     @csrf
     <div class="row">
       <div class="col-6">
+        <x-form-field>
+          <x-form-label for="account_id">Account</x-form-label>
+          <select class="form-select" name="account_id" id="account_id">
+            @foreach ($accounts as $account)
+              <option value="{{ $account->id }}" 
+                  {{ old('account_id',$debt->transaction->account_id) == $account->id? 'selected' : '' }}>
+                  {{ $account->name }}
+              </option>
+            @endforeach
+          </select>
+          <x-form-error name='account_id'/>
+        </x-form-field>
+
         <x-form-field>
           <x-form-label for="transaction_at">Transaction at</x-form-label>
           <x-form-input name='transaction_at' id="transaction_at" type="datetime-local" value="{{ old('transaction_at',now()) }}"/>
@@ -14,9 +27,10 @@
         
         <x-form-field>
           <x-form-label for="type">Type</x-form-label>
-          <select class="form-select" id="type" name="type">
-            <option value="debit" {{ old('type') == 'debit' ? 'selected' : '' }}>Income</option>
-            <option value="credit" {{ old('type') == 'credit' ? 'selected' : '' }}>Expenses</option>
+          <select class="form-select" id="type" name="type" readonly>
+            <option value="{{ $debt->transaction->type == 'debit' ? 'credit' : 'debit' }}" selected>
+              {{ $debt->transaction->type == 'debit' ? 'Expenses' : 'Income' }}
+            </option>
           </select>
           <x-form-error name='type'/>
         </x-form-field>
@@ -32,27 +46,16 @@
           <x-form-input name='amount' id="amount" type="number" value="{{ old('amount') }}"/>
           <x-form-error name='amount'/>
         </x-form-field>
-        
-        <x-form-field class="form-check">
-          <input class="form-check-input" type="checkbox" id="is_debt" name="is_debt" {{ old('type') ? 'checked' : '' }}>
-          <x-form-label class="form-check-label" for="is_debt">Is Debt ?</x-form-label>
-        </x-form-field>
-
-        <x-form-field>
-          <x-form-label for="debt_due_at">Debt due at</x-form-label>
-          <x-form-input name='debt_due_at' id="debt_due_at" type="datetime-local" value="{{ old('debt_due_at') }}"/>
-          <x-form-error name='debt_due_at'/>
-        </x-form-field>
       </div>
       <div class="col-6">
         <x-form-field>
-          <x-form-label>Account</x-form-label>
-          <x-form-input type="text" value="{{ $account->name }}" disabled/>
+          <x-form-label>Debt Amount</x-form-label>
+          <x-form-input type="number" value="{{ $debt->transaction->amount }}" disabled/>
         </x-form-field>
         
         <x-form-field>
-          <x-form-label>Balance</x-form-label>
-          <x-form-input type="number" value="{{ $account->balance }}" disabled/>
+          <x-form-label>Remaining Amount</x-form-label>
+          <x-form-input type="number" value="{{ $debt->transaction->amount - $debt->paid_amount }}" disabled/>
         </x-form-field>
   
         <x-form-field>
@@ -70,7 +73,7 @@
       </div>
       <hr class="my-4">
       <div class="text-end">
-        <a href="{{ route('accounts.transactions.index', $account->id) }}" class="btn btn-secondary">Back</a>
+        <a href="{{ route('debts.index') }}" class="btn btn-secondary">Back</a>
         <button type="submit" class="btn btn-primary" id="save-transaction-btn">Save</button>
       </div>
     </div>
@@ -105,17 +108,6 @@
                   }
               })
           });
-
-          const isDebtCheckbox = document.getElementById('is_debt');
-          const debtDueAtInput = document.getElementById('debt_due_at');
-          // Function to toggle the disabled attribute of the debt_due_at input
-          function toggleDebtDueAtActive() {
-              debtDueAtInput.disabled = !isDebtCheckbox.checked;
-          }
-          // Initialize the state of the debt_due_at input
-          toggleDebtDueAtActive();
-          // Add event listener for the checkbox to call toggleDebtDueAtActive when changed
-          isDebtCheckbox.addEventListener('change', toggleDebtDueAtActive);
       });
     </script>
   @endpush

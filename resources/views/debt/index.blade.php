@@ -1,49 +1,48 @@
 <x-layout>
   <x-slot:headingTitle>
-    Account
+    Debt
   </x-slot>
-  <x-alert name='alert'/>
-  <div class="text-start">
-    <a href="{{ route('accounts.create') }}" class="btn btn-success">Create</a>
-  </div>
+
   <div class="row">
     <div class="col-12">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Created at</th>
-            <th>Updated at</th>
-            <th>Balance</th>
+            <th>Account</th>
+            <th>Remark</th>
+            <th>Transaction At</th>
+            <th>Debt Amount</th>
+            <th>Due At</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($accounts as $account)
+          @foreach ($debts as $debt)
           <tr>
             <th>{{ $loop->iteration }}</th>
-            <td>{{ $account->name }}</td>
-            <td>{{ $account->created_at }}</td>
-            <td>{{ $account->updated_at }}</td>
-            <td>{{ number_format($account->balance, 0, ',', '.') }}</td>
+            <td>{{ $debt->transaction->account->name }}</td>
+            <td>{{ $debt->transaction->remark }}</td>
+            <td>{{ $debt->transaction->transaction_at }}</td>
+            <td>{{ number_format($debt->transaction->amount, 0, ',', '.') }}</td>
+            <td>{{ $debt->due_at }}</td>
+            <td>
+              @if ($debt->status === 'paid')
+                <span class="badge bg-success">Paid</span>
+              @elseif($debt->status === 'partial_paid')
+                <span class="badge bg-warning">Partial Paid</span>
+              @else
+                <span class="badge bg-danger">Unpaid</span>
+              @endif
+            </td>
             <td class="d-inline-flex">
-              <a href="{{ route('accounts.transactions.index',$account->id) }}" class="btn btn-success me-1">Transactions</a>
-              <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
-              <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger delete-btn">Delete</button>
-              </form>
+              <a href="{{ route('debts.show',$debt->transaction_id) }}" class="btn btn-primary me-1">Repayments</a>
             </td>
           </tr>
           @endforeach
         </tbody>
       </table>
-      {{-- pagination links --}}
-      <div> 
-        {{ $accounts->links() }}
-      </div>
     </div>
   </div>
 

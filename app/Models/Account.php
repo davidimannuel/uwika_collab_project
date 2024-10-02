@@ -36,10 +36,42 @@ class Account extends Model
       $errors = DB::transaction(function () use ($transaction) {
         $type = $transaction['type'];
         $amount = $transaction['amount'];
-        $categories = $transaction['categories'];
-        
+        $categories = $transaction['categories'] ?? [];
+        $is_debt = $transaction['is_debt'];
+        $debt_due_at = $transaction['debt_due_at'] ?? null;
+
         $newTransaction = $this->transactions()->create($transaction);
-        $newTransaction->categories()->attach($categories);
+        if (count($categories) > 0) {
+          $newTransaction->categories()->attach($categories);
+        }
+        if ($is_debt) {
+          $newTransaction->debt()->create([
+            'status' => Debt::STATUS_UNPAID,
+            'due_at' => $debt_due_at,
+          ]);
+        }
+
+        // repayment logic
+        $debt_id = $transaction['debt_id'] ?? 0;
+        if ($debt_id > 0) {
+          $debt = Debt::where('id', $debt_id)->first();
+          $debt->paid_amount += $amount;
+          if ($debt->paid_amount > $debt->transaction->amount) {
+            return ["amount" => 'Paid amount greater than debt'];
+          }
+          
+          if ($debt->paid_amount == $debt->transaction->amount) {
+            $debt->status = Debt::STATUS_PAID;
+          } else {
+            $debt->status = Debt::STATUS_PARTIAL_PAID;
+          }
+
+          $debt->repayments()->create([
+            'transaction_id' => $newTransaction->id,
+          ]);
+          $debt->save();
+        }
+
         if ($type === Transaction::TYPE_DEBIT) {
           $this->balance += $amount;
         } elseif ($type === Transaction::TYPE_CREDIT) {
