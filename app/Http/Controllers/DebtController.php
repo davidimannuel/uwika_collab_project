@@ -48,7 +48,7 @@ class DebtController extends Controller
      */
     public function show(Debt $debt)
     {
-      $debt = $debt->with('transaction','repayments.transaction')->first();
+      $debt = $debt->where('id',$debt->id)->with('transaction','repayments.transaction')->first();
       return view('debt.show',[
         'debt' => $debt,
       ]);

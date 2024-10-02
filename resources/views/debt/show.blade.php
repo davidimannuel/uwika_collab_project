@@ -20,7 +20,6 @@
             <th>Amount</th>
             <th>Transaction At</th>
             <th>Categories</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>

@@ -13,7 +13,7 @@
           <tr>
             <th>#</th>
             <th>Remark</th>
-            <th>type</th>
+            {{-- <th>type</th> --}}
             <th>Amount</th>
             <th>Transaction At</th>
             <th>Categories</th>
@@ -25,7 +25,7 @@
           <tr>
             <th>{{ $loop->iteration }}</th>
             <td>{{ $transaction->remark }}</td>
-            <td>{{ $transaction->type }}</td>
+            {{-- <td>{{ $transaction->type }}</td> --}}
             <td>
               @if ($transaction->type === 'debit')
                 <span class="badge bg-success">{{ number_format($transaction->amount, 0, ',', '.') }}</span>
