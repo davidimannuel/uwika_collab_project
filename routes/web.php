@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -35,4 +37,12 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('categories',CategoryController::class);
   // Account
   Route::resource('accounts',AccountController::class);
+  // Account Transaction
+  Route::get('/accounts/{account}/transactions',[AccountTransactionController::class, 'index'])->name('accounts.transactions.index');
+  Route::get('/accounts/{account}/transactions/create',[AccountTransactionController::class, 'create'])->name('accounts.transactions.create');
+  Route::post('/accounts/{account}/transactions',[AccountTransactionController::class, 'store'])->name('accounts.transactions.store');
+  // Transaction
+  Route::get('/transactions',[TransactionController::class, 'index'])->name('transactions.index');
+  Route::get('/transactions/create',[TransactionController::class, 'create'])->name('transactions.create');
+  Route::post('/transactions',[TransactionController::class, 'create'])->name('transactions.store');
 });

@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Account
   </x-slot>
+  <x-alert name='alert'/>
   <div class="text-start">
     <a href="{{ route('accounts.create') }}" class="btn btn-success">Create</a>
   </div>
@@ -14,6 +15,7 @@
             <th>Name</th>
             <th>Created at</th>
             <th>Updated at</th>
+            <th>Balance</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -24,7 +26,9 @@
             <td>{{ $account->name }}</td>
             <td>{{ $account->created_at }}</td>
             <td>{{ $account->updated_at }}</td>
+            <td>{{ number_format($account->balance, 0, ',', '.') }}</td>
             <td class="d-inline-flex">
+              <a href="{{ route('accounts.transactions.index',$account->id) }}" class="btn btn-success me-1">Transactions</a>
               <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
               <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
                 @csrf

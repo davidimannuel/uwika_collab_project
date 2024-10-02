@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
           $table->id();
-          $table->foreignId('user_id');
-          $table->string('name');
-          $table->decimal('balance', total: 20, places: 3)->default(0);
+          $table->foreignId('account_id');
+          $table->string('remark');
+          $table->string('type');
+          $table->decimal('amount', total: 20, places: 3)->default(0);
+          $table->timestamp('transaction_at');
           $table->timestamps();
-          $table->foreign('user_id')->references('id')->on('users');
+          $table->foreign('account_id')->references('id')->on('accounts');
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('transactions');
     }
 };

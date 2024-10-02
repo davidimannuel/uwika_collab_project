@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class AccountController extends Controller
 {
@@ -31,13 +33,12 @@ class AccountController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-      $attributes = $request->validate([
-        'name' => ['required'],
+    {      
+      $account = Account::create([
+        'user_id' => Auth::id(),
+        'name' => $request->input('name'),
       ]);
-      $attributes['user_id'] = Auth::id();
-      Account::create($attributes);
-
+      
       return redirect(route('accounts.index'));
     }
 
@@ -78,6 +79,9 @@ class AccountController extends Controller
      */
     public function destroy(Account $account)
     {
+      if ($account->transactions()->limit(1)->count() > 0) {
+        return redirect(route('accounts.index'))->with('alert',"cannot delete $account->name, because already have transactions");
+      }
       $account->delete();
       return redirect(route('accounts.index'));
     }

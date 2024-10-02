@@ -21,8 +21,8 @@
   
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           @auth
-            <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('category')">Category</x-nav-item>    
-            <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('account')">Account</x-nav-item>    
+            <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
+            <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('accounts')">Account</x-nav-item>
           @endauth
         </ul>
   
