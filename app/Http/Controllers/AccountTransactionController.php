@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Category;
+use App\Models\InsufficientBalanceException;
+use App\Models\InvalidTransactionTypeException;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class AccountTransactionController extends Controller
@@ -49,19 +53,30 @@ class AccountTransactionController extends Controller
       ]);
     }
 
-    $errors = $account->storeTransaction([
-      'type' => $request->input('type'),
-      'amount' => $request->input('amount'),
-      'remark' => $request->input('remark'),
-      'transaction_at' => $request->input('transaction_at'),
-      'categories' => $request->input('categories'),
-      'is_debt' => $is_debt,
-      'debt_due_at' => $request->input('debt_due_at'),
-    ]);
-    if (count($errors) > 0) {
-      throw ValidationException::withMessages($errors);
+    DB::beginTransaction();
+    try {
+      $newTransaction = $account->storeTransaction([
+        'type' => $request->input('type'),
+        'amount' => $request->input('amount'),
+        'remark' => $request->input('remark'),
+        'transaction_at' => $request->input('transaction_at'),
+        'categories' => $request->input('categories'),
+        'is_debt' => $is_debt,
+        'debt_due_at' => $request->input('debt_due_at'),
+      ]);
+
+      // Commit the transaction if everything is successful
+      DB::commit();
+      return redirect(route('accounts.transactions.index', $account->id))->with('success-alert', "success create transaction");;
+    } catch (InsufficientBalanceException $e) {
+        DB::rollBack();
+        throw ValidationException::withMessages(['amount' => 'insufficient balance']);
+    } catch (InvalidTransactionTypeException $e) {
+        DB::rollBack();
+        throw ValidationException::withMessages(['type' => 'invalid transaction type']);
+    } catch (Exception $e) {
+        DB::rollBack();
+        return redirect(route('accounts.transactions.create'))->with('error-alert', $e->getMessage());
     }
-    
-    return redirect(route('accounts.transactions.index', $account->id));
   }
 }

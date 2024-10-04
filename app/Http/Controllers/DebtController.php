@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Category;
 use App\Models\Debt;
+use App\Models\InsufficientBalanceException;
+use App\Models\InvalidTransactionTypeException;
+use App\Models\PaidAmountGreaterThanDebtException;
 use App\Models\Transaction;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class DebtController extends Controller
@@ -108,20 +113,39 @@ class DebtController extends Controller
         'account_id' => ['required'],
       ]);
 
-      $account = Account::where('id',$request->input('account_id'))->first();
-      $errors = $account->storeTransaction([
-        'type' => $request->input('type'),
-        'amount' => $request->input('amount'),
-        'remark' => $request->input('remark'),
-        'transaction_at' => $request->input('transaction_at'),
-        'categories' => $request->input('categories'),
-        'is_debt' => false,
-        'debt_id' => $debt->id,
-      ]);
-      if (count($errors) > 0) {
-        throw ValidationException::withMessages($errors);
+      DB::beginTransaction();
+      try {
+        $account = Account::where('id',$request->input('account_id'))->first();
+        $amount = $request->input('amount');
+        $newTransaction = $account->storeTransaction([
+          'type' => $request->input('type'),
+          'amount' => $amount,
+          'remark' => $request->input('remark'),
+          'transaction_at' => $request->input('transaction_at'),
+          'categories' => $request->input('categories'),
+          'is_debt' => false,
+          'debt_id' => $debt->id,
+        ]);
+        // repayment logic
+        $debt->storeRepayment([
+          'amount' => $amount,
+          'transaction_id' => $newTransaction->id,
+        ]);
+        // Commit the transaction if everything is successful
+        DB::commit();
+        return redirect(route('debts.show', $debt->transaction_id))->with('success-alert', "success create debt transaction");;
+      } catch (InsufficientBalanceException $e) {
+          DB::rollBack();
+          throw ValidationException::withMessages(['amount' => 'insufficient balance']);
+      } catch (PaidAmountGreaterThanDebtException $e) {
+          DB::rollBack();
+          throw ValidationException::withMessages(['amount' => 'Paid amount greater than debt']);
+      } catch (InvalidTransactionTypeException $e) {
+          DB::rollBack();
+          throw ValidationException::withMessages(['type' => 'invalid transaction type']);
+      } catch (Exception $e) {
+          DB::rollBack();
+          return redirect(route('debts.repayments.create'))->with('error-alert', $e->getMessage());
       }
-
-      return redirect(route('debts.index'));
     }
 }

@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Debt
   </x-slot>
+  <x-alert name='success-alert' type='success'/>
   <div class="text-start">
     <a href="{{ route('debts.index') }}" class="btn btn-primary">Back</a>
     @if ($debt->status !== 'paid')
@@ -80,12 +81,12 @@
       
       <x-form-field>
         <x-form-label>Amount</x-form-label>
-        <x-form-input type="number" value="{{ $debt->transaction->amount }}" disabled/>
+        <x-form-input type="text" value="Rp. {{ number_format($debt->transaction->amount, 0, ',', '.') }}" disabled/>
       </x-form-field>
       
       <x-form-field>
         <x-form-label>Paid Amount</x-form-label>
-        <x-form-input type="number" value="{{ $debt->paid_amount }}" disabled/>
+        <x-form-input type="text" value="Rp. {{ number_format($debt->paid_amount, 0, ',', '.') }}" disabled/>
       </x-form-field>
     </div>
   </div>

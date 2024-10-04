@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Transaction
   </x-slot>
+  <x-alert name='success-alert' type='success'/>
   <div class="text-start">
     <a href="{{ route('accounts.index') }}" class="btn btn-primary">Back</a>
     <a href="{{ route('accounts.transactions.create', $account->id) }}" class="btn btn-success">Create</a>
@@ -77,7 +78,7 @@
       
       <x-form-field>
         <x-form-label>Balance</x-form-label>
-        <x-form-input type="number" value="{{ $account->balance }}" disabled/>
+        <x-form-input type="text" value="Rp. {{ number_format($account->balance, 0, ',', '.') }}" disabled/>
       </x-form-field>
     </div>
   </div>

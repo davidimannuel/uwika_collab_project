@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Create transaction
   </x-slot>
+  <x-alert name='error-alert' type='danger'/>
   <form method="POST" action="{{ route('accounts.transactions.store',$account->id) }}" >
     @csrf
     <div class="row">

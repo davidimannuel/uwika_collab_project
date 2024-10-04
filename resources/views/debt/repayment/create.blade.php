@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Create repayment
   </x-slot>
+  <x-alert name='error-alert' type='danger'/>
   <form method="POST" action="{{ route('debts.repayments.store',$debt->id) }}" >
     @csrf
     <div class="row">
@@ -50,12 +51,12 @@
       <div class="col-6">
         <x-form-field>
           <x-form-label>Debt Amount</x-form-label>
-          <x-form-input type="number" value="{{ $debt->transaction->amount }}" disabled/>
+          <x-form-input type="text" value="Rp. {{ number_format($debt->transaction->amount, 0, ',', '.') }}" disabled/>
         </x-form-field>
         
         <x-form-field>
           <x-form-label>Remaining Amount</x-form-label>
-          <x-form-input type="number" value="{{ $debt->transaction->amount - $debt->paid_amount }}" disabled/>
+          <x-form-input type="text" value="Rp. {{ number_format($debt->transaction->amount - $debt->paid_amount, 0, ',', '.') }}" disabled/>
         </x-form-field>
   
         <x-form-field>

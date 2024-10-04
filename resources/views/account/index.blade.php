@@ -2,7 +2,7 @@
   <x-slot:headingTitle>
     Account
   </x-slot>
-  <x-alert name='alert'/>
+  <x-alert name='alert' type='danger'/>
   <div class="text-start">
     <a href="{{ route('accounts.create') }}" class="btn btn-success">Create</a>
   </div>

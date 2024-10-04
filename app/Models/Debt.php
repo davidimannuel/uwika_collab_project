@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -35,4 +36,32 @@ class Debt extends Model
   {
       return $this->hasMany(DebtRepayment::class);
   }
+
+  public function storeRepayment(array $repayment)
+  {
+    $transactionId = $repayment['transaction_id'];
+    $amount = $repayment['amount'];
+    $this->paid_amount += $amount;
+    if ($this->paid_amount > $this->transaction->amount) {
+      throw new PaidAmountGreaterThanDebtException;
+    }
+    if ($this->paid_amount == $this->transaction->amount) {
+      $this->status = Debt::STATUS_PAID;
+    } else {
+      $this->status = Debt::STATUS_PARTIAL_PAID;
+    }
+    $this->repayments()->create([
+      'transaction_id' => $transactionId,
+    ]);
+    $this->save();
+  }
+}
+
+class PaidAmountGreaterThanDebtException extends Exception
+{
+    public function __construct($message = "Paid amount greater than debt")
+    {
+        // Call the base class constructor with the custom message
+        parent::__construct($message);
+    }
 }
