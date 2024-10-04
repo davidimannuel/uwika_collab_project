@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Exception;
+use App\Exceptions\InsufficientBalanceException;
+use App\Exceptions\InvalidTransactionTypeException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class Account extends Model
 {
@@ -65,23 +64,5 @@ class Account extends Model
       $this->save();
 
       return $newTransaction;
-    }
-}
-
-class InsufficientBalanceException extends Exception
-{
-    public function __construct($message = "Insufficient balance for this transaction.")
-    {
-        // Call the base class constructor with the custom message
-        parent::__construct($message);
-    }
-}
-
-class InvalidTransactionTypeException extends Exception
-{
-    public function __construct($message = "The transaction type is invalid.")
-    {
-        // Call the base class constructor with the custom message
-        parent::__construct($message);
     }
 }

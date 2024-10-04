@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Exception;
+use App\Exceptions\PaidAmountGreaterThanDebtException;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
 
 class Debt extends Model
 {
@@ -55,13 +54,4 @@ class Debt extends Model
     ]);
     $this->save();
   }
-}
-
-class PaidAmountGreaterThanDebtException extends Exception
-{
-    public function __construct($message = "Paid amount greater than debt")
-    {
-        // Call the base class constructor with the custom message
-        parent::__construct($message);
-    }
 }

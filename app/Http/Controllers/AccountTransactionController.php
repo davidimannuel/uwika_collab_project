@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException as ExceptionsInsufficientBalanceException;
+use App\Exceptions\InvalidTransactionTypeException as ExceptionsInvalidTransactionTypeException;
 use App\Models\Account;
 use App\Models\Category;
 use App\Models\InsufficientBalanceException;
@@ -68,10 +70,10 @@ class AccountTransactionController extends Controller
       // Commit the transaction if everything is successful
       DB::commit();
       return redirect(route('accounts.transactions.index', $account->id))->with('success-alert', "success create transaction");;
-    } catch (InsufficientBalanceException $e) {
+    } catch (ExceptionsInsufficientBalanceException $e) {
         DB::rollBack();
         throw ValidationException::withMessages(['amount' => 'insufficient balance']);
-    } catch (InvalidTransactionTypeException $e) {
+    } catch (ExceptionsInvalidTransactionTypeException $e) {
         DB::rollBack();
         throw ValidationException::withMessages(['type' => 'invalid transaction type']);
     } catch (Exception $e) {

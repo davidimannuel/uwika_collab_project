@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientBalanceException as ExceptionsInsufficientBalanceException;
+use App\Exceptions\InvalidTransactionTypeException as ExceptionsInvalidTransactionTypeException;
+use App\Exceptions\PaidAmountGreaterThanDebtException as ExceptionsPaidAmountGreaterThanDebtException;
 use App\Models\Account;
 use App\Models\Category;
 use App\Models\Debt;
-use App\Models\InsufficientBalanceException;
-use App\Models\InvalidTransactionTypeException;
-use App\Models\PaidAmountGreaterThanDebtException;
-use App\Models\Transaction;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -134,13 +133,13 @@ class DebtController extends Controller
         // Commit the transaction if everything is successful
         DB::commit();
         return redirect(route('debts.show', $debt->transaction_id))->with('success-alert', "success create debt transaction");;
-      } catch (InsufficientBalanceException $e) {
+      } catch (ExceptionsInsufficientBalanceException $e) {
           DB::rollBack();
           throw ValidationException::withMessages(['amount' => 'insufficient balance']);
-      } catch (PaidAmountGreaterThanDebtException $e) {
+      } catch (ExceptionsPaidAmountGreaterThanDebtException $e) {
           DB::rollBack();
           throw ValidationException::withMessages(['amount' => 'Paid amount greater than debt']);
-      } catch (InvalidTransactionTypeException $e) {
+      } catch (ExceptionsInvalidTransactionTypeException $e) {
           DB::rollBack();
           throw ValidationException::withMessages(['type' => 'invalid transaction type']);
       } catch (Exception $e) {
