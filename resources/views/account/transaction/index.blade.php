@@ -5,7 +5,11 @@
   <x-alert name='success-alert' type='success'/>
   <div class="text-start">
     <a href="{{ route('accounts.index') }}" class="btn btn-primary">Back</a>
+    @can('create-transaction')
     <a href="{{ route('accounts.transactions.create', $account->id) }}" class="btn btn-success">Create</a>
+    @else
+      <button type="submit" class="btn btn-success disable" disabled>Create</button>
+    @endcan
   </div>
   <div class="row">
     <div class="col-8">

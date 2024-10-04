@@ -7,6 +7,7 @@ use App\Http\Controllers\DebtController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserAdminController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -51,4 +52,10 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/transactions',[TransactionController::class, 'index'])->name('transactions.index');
   Route::get('/transactions/create',[TransactionController::class, 'create'])->name('transactions.create');
   Route::post('/transactions',[TransactionController::class, 'create'])->name('transactions.store');
+
+  // for Admin only is_admin = true
+  Route::prefix('admin')->group(function () {
+    Route::get('/users', [UserAdminController::class,'index'])->name('admin.users.index');
+    Route::patch('/users/{id}', [UserAdminController::class,'patchStatus'])->name('admin.users.status.update');
+  });
 });

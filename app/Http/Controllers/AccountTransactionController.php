@@ -13,6 +13,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
 
 class AccountTransactionController extends Controller
@@ -29,6 +30,7 @@ class AccountTransactionController extends Controller
   
   public function create(Account $account)
   {
+    Gate::authorize('create-transaction');
     $transactions = $account->transactions()->orderBy('transaction_at', 'desc')->paginate(10);
     $categories = Category::where('user_id',Auth::id())->get();
     
@@ -41,6 +43,7 @@ class AccountTransactionController extends Controller
   
   public function store(Account $account, Request $request)
   {
+    Gate::authorize('create-transaction');
     $request->validate([
       'remark' => ['required'],
       'type' => ['required'],

@@ -6,7 +6,11 @@
   <div class="text-start">
     <a href="{{ route('debts.index') }}" class="btn btn-primary">Back</a>
     @if ($debt->status !== 'paid')
-      <a href="{{ route('debts.repayments.create', $debt->id) }}" class="btn btn-success">Pay debt</a>
+      @can('create-debt-repayment')
+        <a href="{{ route('debts.repayments.create', $debt->id) }}" class="btn btn-success">Pay debt</a>
+      @else
+        <button type="submit" class="btn btn-success disable" disabled>Pay debt</button>
+      @endcan
     @endif
   </div>
   <div class="row">

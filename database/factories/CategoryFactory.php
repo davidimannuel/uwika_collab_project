@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
       ]);
       // concat name with unique number to avoid duplicate name
       return [
-          'name' => $name . ' ' . $this->faker->unique()->numberBetween(1, 100),
+          'name' => $name . ' ' . $this->faker->numberBetween(1, 100),
       ];
     }
 }

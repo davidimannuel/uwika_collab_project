@@ -21,9 +21,13 @@
   
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
           @auth
-            <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('accounts*')">Account</x-nav-item>
-            <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
-            <x-nav-item href="{{ route('debts.index') }}" :active="request()->is('debts*')">Debt</x-nav-item>    
+            @if (auth()->user()->is_admin)    
+              <x-nav-item href="{{ route('admin.users.index') }}" :active="request()->is('admin/users*')">User</x-nav-item>
+            @else
+              <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('accounts*')">Account</x-nav-item>
+              <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
+              <x-nav-item href="{{ route('debts.index') }}" :active="request()->is('debts*')">Debt</x-nav-item>    
+            @endif
           @endauth
         </ul>
   

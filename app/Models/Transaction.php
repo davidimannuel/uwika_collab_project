@@ -45,9 +45,4 @@ class Transaction extends Model
   {
       return $this->hasOne(DebtRepayment::class);
   }
-
-  // public function debtRepayment(): BelongsTo
-  // {
-  //     return $this->belongsTo(DebtRepayment::class);
-  // }
 }
