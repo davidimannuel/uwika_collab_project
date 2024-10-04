@@ -17,7 +17,6 @@
             <th>#</th>
             <th>Account</th>
             <th>Remark</th>
-            <th>type</th>
             <th>Amount</th>
             <th>Transaction At</th>
             <th>Categories</th>
@@ -28,8 +27,7 @@
           <tr>
             <th>{{ $loop->iteration }}</th>
             <td>{{ $repayment->transaction->account->name }}</td>
-            <td>{{ $repayment->remark }}</td>
-            <td>{{ $repayment->type }}</td>
+            <td>{{ $repayment->transaction->remark }}</td>
             <td>
               @if ($repayment->transaction->type === 'debit')
                 <span class="badge bg-success">{{ number_format($repayment->transaction->amount, 0, ',', '.') }}</span>
