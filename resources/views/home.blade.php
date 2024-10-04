@@ -2,5 +2,9 @@
   <x-slot:headingTitle>
     Home
   </x-slot>
-  Home Page
+  @auth
+    Hello {{ auth()->user()->email }}
+  @else 
+    Please Register
+  @endauth
 </x-layout>
