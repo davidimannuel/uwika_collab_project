@@ -7,43 +7,34 @@
     <a href="{{ route('accounts.create') }}" class="btn btn-success">Create</a>
   </div>
   <div class="row">
-    <div class="col-12">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Created at</th>
-            <th>Updated at</th>
-            <th>Balance</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($accounts as $account)
-          <tr>
-            <th>{{ $loop->iteration }}</th>
-            <td>{{ $account->name }}</td>
-            <td>{{ $account->created_at }}</td>
-            <td>{{ $account->updated_at }}</td>
-            <td>{{ number_format($account->balance, 0, ',', '.') }}</td>
-            <td class="d-inline-flex">
-              <a href="{{ route('accounts.transactions.index',$account->id) }}" class="btn btn-success me-1">Transactions</a>
-              <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
-              <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger delete-btn">Delete</button>
-              </form>
-            </td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-      {{-- pagination links --}}
-      <div> 
-        {{ $accounts->links() }}
+    @foreach ($accounts as $account)
+      <div class="col-4">
+        <div class="card mt-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ $account->name }}</h5>
+            <p class="card-text">Rp. {{ number_format($account->balance, 0, ',', '.') }}</p>
+          </div>
+          <div class="card-body d-inline-flex">
+            <a href="{{ route('accounts.transactions.index',$account->id) }}" class="btn btn-success me-1">Transactions</a>
+            <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
+            <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="btn btn-danger delete-btn">Delete</button>
+            </form>
+          </div>
+          <div class="card-footer">
+            <small class="text-body-secondary">Created {{ $account->created_at->diffForHumans() }}, </small>
+            <small class="text-body-secondary">Last updated {{ $account->updated_at->diffForHumans() }}</small>
+          </div>
+        </div>
       </div>
+    @endforeach
+  </div>
+  <div class="row">
+    {{-- pagination links --}}
+    <div> 
+      {{ $accounts->links() }}
     </div>
   </div>
 

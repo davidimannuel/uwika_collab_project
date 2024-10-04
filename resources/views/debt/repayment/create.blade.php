@@ -69,6 +69,7 @@
             @endforeach
           </select>
           <x-form-error name='categories'/>
+          <button type="button" id="reset-categories" class="btn btn-secondary mt-2">Unselect all categories</button>
         </x-form-field>
       </div>
       <hr class="my-4">
@@ -87,27 +88,35 @@
     <script src="{{ asset('assets/sweetalert2-11.14.1/dist/sweetalert2.all.min.js') }}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-          // Select all delete buttons
-          var button = document.getElementById('save-transaction-btn');
-          button.addEventListener('click', function(event) {
-              event.preventDefault(); // Prevent the form from submitting immediately
-              let form = this.closest('form'); // Find the form associated with the delete button
-              // Trigger SweetAlert confirmation
-              Swal.fire({
-                  title: 'Are you sure?',
-                  text: "You won't be able to revert this!",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, save it!'
-              }).then((result) => {
-                  if (result.isConfirmed) {
-                      // Submit the form if the user confirms
-                      form.submit();
-                  }
-              })
-          });
+        // Select all delete buttons
+        var button = document.getElementById('save-transaction-btn');
+        button.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+            let form = this.closest('form'); // Find the form associated with the delete button
+            // Trigger SweetAlert confirmation
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, save it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Submit the form if the user confirms
+                    form.submit();
+                }
+            })
+        });
+
+        // unselect categories
+        document.getElementById('reset-categories').addEventListener('click', function() {
+          const categories = document.getElementById('categories');
+          for (let i = 0; i < categories.options.length; i++) {
+            categories.options[i].selected = false; // Unselect each option
+          }
+        });
       });
     </script>
   @endpush

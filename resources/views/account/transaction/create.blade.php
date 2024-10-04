@@ -66,6 +66,7 @@
             @endforeach
           </select>
           <x-form-error name='categories'/>
+          <button type="button" id="reset-categories" class="btn btn-secondary mt-2">Unselect all categories</button>
         </x-form-field>
       </div>
       <hr class="my-4">
@@ -116,6 +117,14 @@
           toggleDebtDueAtActive();
           // Add event listener for the checkbox to call toggleDebtDueAtActive when changed
           isDebtCheckbox.addEventListener('change', toggleDebtDueAtActive);
+
+          // unselect categories
+          document.getElementById('reset-categories').addEventListener('click', function() {
+            const categories = document.getElementById('categories');
+            for (let i = 0; i < categories.options.length; i++) {
+              categories.options[i].selected = false; // Unselect each option
+            }
+          });
       });
     </script>
   @endpush
