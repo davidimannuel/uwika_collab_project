@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AccountTransactionController;
+use App\Http\Controllers\BudgetController;
+use App\Http\Controllers\BudgetTransactionController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\LoginController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\EnsureIsAdmin;
+use App\Models\BudgetTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -55,11 +58,9 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/debts/{debt:transaction_id}', [DebtController::class, 'show'])->name('debts.show');
   Route::get('/debts/{debt:id}/repayments', [DebtController::class, 'createRepayment'])->name('debts.repayments.create');
   Route::post('/debts/{debt:id}/repayments', [DebtController::class, 'storeRepayment'])->name('debts.repayments.store');
-  // Transaction
-  Route::get('/transactions',[TransactionController::class, 'index'])->name('transactions.index');
-  Route::get('/transactions/create',[TransactionController::class, 'create'])->name('transactions.create');
-  Route::post('/transactions',[TransactionController::class, 'create'])->name('transactions.store');
-
+  // Budget
+  Route::resource('budgets',BudgetController::class);
+  Route::get('budgets/transactions/{budget}',[BudgetTransactionController::class, 'index'])->name('budgets.transactions.index');
   // for Admin only is_admin = true
   Route::prefix('admin')->middleware(EnsureIsAdmin::class)->group(function () {
     Route::get('/users', [UserAdminController::class,'index'])->name('admin.users.index');

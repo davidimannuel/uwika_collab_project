@@ -45,4 +45,9 @@ class Transaction extends Model
   {
       return $this->hasOne(DebtRepayment::class);
   }
+  
+  public function budgetTransaction(): HasOne
+  {
+      return $this->hasOne(BudgetTransaction::class);
+  }
 }

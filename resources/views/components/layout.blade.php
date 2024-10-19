@@ -27,6 +27,7 @@
               <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('accounts*')">Account</x-nav-item>
               <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
               <x-nav-item href="{{ route('debts.index') }}" :active="request()->is('debts*')">Debt</x-nav-item>    
+              <x-nav-item href="{{ route('budgets.index') }}" :active="request()->is('budgets*')">Budget</x-nav-item>    
             @endif
           @endauth
         </ul>

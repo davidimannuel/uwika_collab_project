@@ -30,7 +30,7 @@
         
         <x-form-field>
           <x-form-label for="amount">Amount</x-form-label>
-          <x-form-input name='amount' id="amount" type="number" value="{{ old('amount') }}"/>
+          <x-form-input name='amount' id="amount" type="number" value="{{ old('amount', 0) }}"/>
           <x-form-error name='amount'/>
         </x-form-field>
         

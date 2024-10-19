@@ -24,11 +24,6 @@ class DebtRepayment extends Model
       return $this->belongsTo(Debt::class);
   }
 
-  // public function transaction(): HasOne
-  // {
-  //     return $this->hasOne(Transaction::class,'id');
-  // }
-
   public function transaction(): BelongsTo
   {
       return $this->belongsTo(Transaction::class);
