@@ -36,7 +36,7 @@ class Account extends Model
       $type = $transaction['type'];
       $amount = $transaction['amount'];
       $categories = $transaction['categories'] ?? [];
-      $is_debt = $transaction['is_debt'];
+      $is_debt = $transaction['is_debt'] ?? false;
       $debt_due_at = $transaction['debt_due_at'] ?? null;
 
       $newTransaction = $this->transactions()->create($transaction);

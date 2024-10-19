@@ -15,7 +15,7 @@
           <ul class="nav">
             <x-nav-item href="/" :active="request()->is('/')">Home</x-nav-item>
             <x-nav-item href="/about" :active="request()->is('about')">About</x-nav-item>
-            <x-nav-item href="/contact" :active="request()->is('contact')">Contact</x-nav-item>
+            <x-nav-item href="/support" :active="request()->is('support')">Support</x-nav-item>
           </ul>
         </div>
   

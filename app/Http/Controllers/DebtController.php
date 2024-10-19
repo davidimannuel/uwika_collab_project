@@ -108,7 +108,7 @@ class DebtController extends Controller
         'type' => ['required'],
         'remark' => ['required'],
         'transaction_at' => ['required'],
-        'amount' => ['numeric', 'gte:0'],
+        'amount' => ['numeric', 'gt:0'],
         'account_id' => ['required'],
       ]);
 

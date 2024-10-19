@@ -17,6 +17,7 @@
           <div class="card-body d-inline-flex">
             <a href="{{ route('accounts.transactions.index',$account->id) }}" class="btn btn-success me-1">Transactions</a>
             <a href="{{ route('accounts.edit',$account->id) }}" class="btn btn-primary me-1">Edit</a>
+            <a href="{{ route('accounts.transfer',$account->id) }}" class="btn btn-secondary me-1">Transfer</a>
             <form action="{{ route('accounts.destroy',$account->id) }}" method="POST">
               @csrf
               @method('DELETE')

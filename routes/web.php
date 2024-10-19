@@ -9,6 +9,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\EnsureIsAdmin;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -23,8 +24,11 @@ Route::get('/about', function () {
     return view('about');
 });
 
-Route::get('/contact', function () {
-    return view('contact');
+Route::get('/support', function () {
+    $admins = User::where('is_admin',true)->get();
+    return view('support',[
+      'admins' => $admins
+    ]);
 });
 
 // Auth
@@ -40,6 +44,8 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('categories',CategoryController::class);
   // Account
   Route::resource('accounts',AccountController::class);
+  Route::get('/accounts/{account}/transfer',[AccountController::class, 'transfer'])->name('accounts.transfer');
+  Route::post('/accounts/{account}/transfer',[AccountController::class, 'processTransfer'])->name('accounts.processTransfer');
   // Account Transaction
   Route::get('/accounts/{account}/transactions',[AccountTransactionController::class, 'index'])->name('accounts.transactions.index');
   Route::get('/accounts/{account}/transactions/create',[AccountTransactionController::class, 'create'])->name('accounts.transactions.create');
