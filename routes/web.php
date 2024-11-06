@@ -13,6 +13,7 @@ use App\Http\Controllers\UserAdminController;
 use App\Http\Middleware\EnsureIsAdmin;
 use App\Models\BudgetTransaction;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -20,7 +21,14 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', function () {
-    return view('home');
+  if (Auth::check()) {
+    if (!Auth::user()->is_admin) {
+      return view('dashboard.index');
+    } else {
+      return view('home');
+    }
+  }
+  return view('home');
 })->name('home');
 
 Route::get('/about', function () {
