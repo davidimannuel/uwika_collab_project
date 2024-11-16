@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
       // ->create(); 
 
       // Create 15 users
-      User::factory(15)->create()->each(function ($user) {
+      User::factory(3)->create()->each(function ($user) {
         // Each user has 6 accounts
         $accounts = Account::factory(6)->create(['user_id' => $user->id]);
     
@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
             $totalCredit = 0;
     
             // Create 20 transactions for each account
-            $transactions = Transaction::factory(20)->make();
+            $transactions = Transaction::factory(40)->make();
     
             // Save transactions and categorize them
             $transactions->each(function ($transaction) use ($account, $categoryIds, &$totalDebit, &$totalCredit) {

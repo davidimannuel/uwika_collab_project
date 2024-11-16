@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountTransactionController;
 use App\Http\Controllers\BudgetController;
 use App\Http\Controllers\BudgetTransactionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -51,6 +52,9 @@ Route::post('/login',[LoginController::class,'store'])->name('login.store');
 Route::post('/logout',[LoginController::class,'destroy'])->name('login.destroy');
 
 Route::middleware(['auth'])->group(function () {
+  // Dashboard
+  Route::get('/dashboard/incomeExpensesThisYearByMonth',[DashboardController::class, 'incomeExpensesThisYearByMonth'])->name('dashboard.incomeExpensesThisYearByMonth');
+  Route::get('/dashboard/incomeExpensesByCategoryThisMonth',[DashboardController::class, 'incomeExpensesByCategoryThisMonth'])->name('dashboard.incomeExpensesByCategoryThisMonth');
   // Category
   Route::resource('categories',CategoryController::class);
   // Account
