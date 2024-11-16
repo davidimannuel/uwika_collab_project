@@ -63,6 +63,31 @@ class DashboardController extends Controller
         "data" => $finalData
       ]);
     }
+    
+    public function incomeExpensesThisYearByAccount() {
+      $currentYear = Carbon::now()->year;
+      $currentUserId = Auth::id();
+  
+      // Fetch total income and total expenses grouped by month for the current year
+      $data = DB::table('transactions')
+        ->leftJoin('accounts', 'transactions.account_id', '=', 'accounts.id')
+        ->where('accounts.user_id', $currentUserId)
+        ->whereYear('transactions.transaction_at', $currentYear)
+        ->selectRaw(
+            'accounts.name as account_name,
+             SUM(CASE WHEN transactions.type = ? THEN transactions.amount ELSE 0 END) as total_income,
+             SUM(CASE WHEN transactions.type = ? THEN transactions.amount ELSE 0 END) as total_expense',
+            [Transaction::TYPE_CREDIT, Transaction::TYPE_DEBIT]
+        )
+        ->groupByRaw('accounts.id')
+        ->orderBy('accounts.created_at')
+        ->get();
+      
+      // dd($finalData);
+      return response()->json([
+        "data" => $data
+      ]);
+    }
 
     public function incomeExpensesByCategoryThisMonth() {
       $startOfMonth = Carbon::now()->startOfMonth();

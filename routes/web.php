@@ -54,6 +54,7 @@ Route::post('/logout',[LoginController::class,'destroy'])->name('login.destroy')
 Route::middleware(['auth'])->group(function () {
   // Dashboard
   Route::get('/dashboard/incomeExpensesThisYearByMonth',[DashboardController::class, 'incomeExpensesThisYearByMonth'])->name('dashboard.incomeExpensesThisYearByMonth');
+  Route::get('/dashboard/incomeExpensesThisYearByAccount',[DashboardController::class, 'incomeExpensesThisYearByAccount'])->name('dashboard.incomeExpensesThisYearByAccount');
   Route::get('/dashboard/incomeExpensesByCategoryThisMonth',[DashboardController::class, 'incomeExpensesByCategoryThisMonth'])->name('dashboard.incomeExpensesByCategoryThisMonth');
   // Category
   Route::resource('categories',CategoryController::class);

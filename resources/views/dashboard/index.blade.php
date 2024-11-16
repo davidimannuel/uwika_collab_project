@@ -7,7 +7,7 @@
       <canvas id="incomeThisMonthByCategoryChart"></canvas>
     </div>
     <div class="col-8">
-      <canvas id="barChart"></canvas>
+      <canvas id="incomeExpensesThisYearByAccountChart"></canvas>
     </div>
   </div>
   <div class="row">
@@ -23,25 +23,50 @@
     <script src="{{ asset('assets/chartjs-4.4.1/chart.umd.js') }}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-        const barChart = document.getElementById('barChart');
-        new Chart(barChart, {
-          type: 'bar',
-          data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              borderWidth: 1
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
+        // incomeExpensesThisYearByAccountChart
+        // Fetch data from your route
+        fetch("{{ route('dashboard.incomeExpensesThisYearByAccount') }}")  // Replace this with your actual URL
+          .then(response => response.json())
+          .then(data => {
+            // Extract account names, income, and expense values from the response data
+            const accountNames = data.data.map(item => item.account_name);
+            const incomeData = data.data.map(item => parseFloat(item.total_income));
+            const expenseData = data.data.map(item => parseFloat(item.total_expense));
+
+            // Create the chart
+            const incomeExpensesThisYearByAccountChart = document.getElementById('incomeExpensesThisYearByAccountChart');
+            new Chart(incomeExpensesThisYearByAccountChart, {
+              type: 'bar',
+              data: {
+                labels: accountNames, // Account names as the labels
+                datasets: [
+                  {
+                    label: 'Income',
+                    data: incomeData, // Income data for each account
+                    backgroundColor: 'rgba(0, 164, 24, 0.8)',
+                    borderWidth: 1
+                  },
+                  {
+                    label: 'Expenses',
+                    data: expenseData, // Expense data for each account
+                    backgroundColor: 'rgba(211, 0, 0, 0.8)',
+                    borderWidth: 1
+                  }
+                ]
+              },
+              options: {
+                scales: {
+                  y: {
+                    beginAtZero: true
+                  }
+                }
               }
-            }
-          }
-        });
+            });
+          })
+          .catch(error => {
+            console.error('Error fetching incomeExpensesThisYearByAccountChart data:', error);
+          });
+
         
         // expenseIncomeThisYearByMonthChart
         fetch("{{ route('dashboard.incomeExpensesThisYearByMonth') }}")
