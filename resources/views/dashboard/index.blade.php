@@ -49,33 +49,13 @@
           .then(result => {
             const data = result.data;
             // Extract labels and data from the API response
-            // const labels = data.map(item => `${item.month}`);
-            // const incomeData = data.map(item => parseFloat(item.total_income));
-            // const expenseData = data.map(item => parseFloat(item.total_expense));
-            // Initialize empty arrays for income and expense
-            const labelsIncome = [];
-            const labelsExpense = [];
-            const incomeData = [];
-            const expenseData = [];
-
-            // Iterate through the data
-            data.forEach(item => {
-              // If the income is greater than 0, add to income arrays
-              if (parseFloat(item.total_income) > 0) {
-                labelsIncome.push(item.category);
-                incomeData.push(parseFloat(item.total_income));
-              }
-
-              // If the expense is greater than 0, add to expense arrays
-              if (parseFloat(item.total_expense) > 0) {
-                labelsExpense.push(item.category);
-                expenseData.push(parseFloat(item.total_expense));
-              }
-            });
+            const labels = data.map(item => `${item.month}`);
+            const incomeData = data.map(item => parseFloat(item.total_income));
+            const expenseData = data.map(item => parseFloat(item.total_expense));
             const expenseIncomeThisYearByMonthChart = document.getElementById('expenseIncomeThisYearByMonthChart');
             new Chart(expenseIncomeThisYearByMonthChart, {
               data: {
-                labels: labelsIncome,
+                labels: labels,
                 datasets: [
                   {
                     label: 'Income',
