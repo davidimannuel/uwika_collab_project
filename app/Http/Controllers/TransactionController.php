@@ -11,7 +11,13 @@ use Illuminate\Support\Facades\Auth;
 class TransactionController extends Controller
 {
     public function index(Request $request) {
-      $accountId = $request->input('account_id');
+      $validated = $request->validate([
+        'account_id' => 'nullable|exists:accounts,id',
+        'transaction_from' => 'nullable|date',
+        'transaction_to' => 'nullable|date|after_or_equal:transaction_from',
+      ]);
+      
+      $accountId = $request->input('account_id') ?? '';
       $transactionFrom = $request->input('transaction_from') 
           ? Carbon::parse($request->input('transaction_from'))->startOfDay() 
           : Carbon::today()->startOfDay();
@@ -22,7 +28,7 @@ class TransactionController extends Controller
         ->whereHas('account', function ($query) {
             $query->where('user_id', Auth::id()); // Filter transactions by current user
           })
-        ->when($accountId, function ($query) use ($accountId) {
+        ->when($accountId != '', function ($query) use ($accountId) {
             $query->where('account_id', $accountId);
         })
         ->whereBetween('transaction_at', [$transactionFrom, $transactionTo])

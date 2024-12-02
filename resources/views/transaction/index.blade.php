@@ -9,9 +9,10 @@
         <x-form-field>
           <x-form-label for="account_id">Account</x-form-label>
           <select class="form-select" name="account_id" id="account_id">
+            <option value="">All</option>
             @foreach ($accounts as $account)
               <option value="{{ $account->id }}" 
-                  {{ old('account_id') == $account->id? 'selected' : '' }}>
+                  {{ old('account_id',request('account_id')) == $account->id? 'selected' : '' }}>
                   {{ $account->name }}
               </option>
             @endforeach
