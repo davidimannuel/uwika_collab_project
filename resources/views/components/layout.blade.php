@@ -14,7 +14,9 @@
         <div class="col-md-3 mb-2 mb-md-0">
           <ul class="nav">
             <x-nav-item href="/" :active="request()->is('/')">Home</x-nav-item>
-            <x-nav-item href="/about" :active="request()->is('about')">About</x-nav-item>
+            @auth
+            <x-nav-item href="/profile" :active="request()->is('profile')">Profile</x-nav-item>
+            @endauth
             <x-nav-item href="/support" :active="request()->is('support')">Support</x-nav-item>
           </ul>
         </div>

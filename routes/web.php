@@ -11,6 +11,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureIsAdmin;
 use App\Models\BudgetTransaction;
 use App\Models\User;
@@ -32,10 +33,6 @@ Route::get('/', function () {
   return view('home');
 })->name('home');
 
-Route::get('/about', function () {
-    return view('about');
-});
-
 Route::get('/support', function () {
     $admins = User::where('is_admin',true)->get();
     return view('support',[
@@ -52,6 +49,11 @@ Route::post('/login',[LoginController::class,'store'])->name('login.store');
 Route::post('/logout',[LoginController::class,'destroy'])->name('login.destroy');
 
 Route::middleware(['auth'])->group(function () {
+  // profile
+  Route::get('/profile', function () {
+    return view('profile');
+  })->name('profile');
+  Route::patch('/profile',[UserController::class,'updateProfile'])->name('profile.update');
   // Dashboard
   Route::get('/dashboard/incomeExpensesThisYearByMonth',[DashboardController::class, 'incomeExpensesThisYearByMonth'])->name('dashboard.incomeExpensesThisYearByMonth');
   Route::get('/dashboard/incomeExpensesThisYearByAccount',[DashboardController::class, 'incomeExpensesThisYearByAccount'])->name('dashboard.incomeExpensesThisYearByAccount');
