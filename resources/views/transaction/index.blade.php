@@ -2,10 +2,10 @@
   <x-slot:headingTitle>
     Transaction
   </x-slot>
-  <form action="{{ route('transactions.index') }}" method="POST">
+  <form id="transaction-form" action="{{ route('transactions.index') }}" method="POST">
     @csrf
     <div class="row">
-      <div class="col-4">
+      <div class="col-3">
         <x-form-field>
           <x-form-label for="account_id">Account</x-form-label>
           <select class="form-select" name="account_id" id="account_id">
@@ -32,6 +32,12 @@
           <x-form-label for="transaction_to">Transaction to</x-form-label>
           <x-form-input name='transaction_to' id="transaction_to" type="date" value="{{ old('transaction_to',request('transaction_to', now()->format('Y-m-d')),now()->format('Y-m-d')) }}"/>
           <x-form-error name='transaction_to'/>
+        </x-form-field>
+      </div>
+      <div class="col-1">
+        <x-form-field class="form-check">
+          <input class="form-check-input" type="checkbox" id="is_print" name="is_print" {{ old('type') ? 'checked' : '' }}>
+          <x-form-label class="form-check-label" for="is_print">Print ?</x-form-label>
         </x-form-field>
       </div>
     </div>
@@ -81,4 +87,22 @@
       </table>    
     </div>
   </div>
+
+  @push('custom-js')
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('transaction-form').addEventListener('submit', function(e) {
+        const isPrint = document.getElementById('is_print').checked;
+        // If the "Print?" checkbox is checked, open in a new tab
+        if (isPrint) {
+          // Change form target to open in a new tab
+          this.target = '_blank';
+        } else {
+          // Ensure the form is submitted in the same tab
+          this.target = '_self';
+        }
+      });
+      });
+    </script>
+  @endpush
 </x-layout>

@@ -11,12 +11,14 @@ use Illuminate\Support\Facades\Auth;
 class TransactionController extends Controller
 {
     public function index(Request $request) {
-      $validated = $request->validate([
-        'account_id' => 'nullable|exists:accounts,id',
-        'transaction_from' => 'nullable|date',
-        'transaction_to' => 'nullable|date|after_or_equal:transaction_from',
-      ]);
-      
+      // If it's a POST request, validate the input
+      if ($request->isMethod('post')) {
+        $validated = $request->validate([
+            'account_id' => 'nullable|exists:accounts,id',
+            'transaction_from' => 'required|date',
+            'transaction_to' => 'required|date|after_or_equal:transaction_from',
+        ]);
+      }
       $accountId = $request->input('account_id') ?? '';
       $transactionFrom = $request->input('transaction_from') 
           ? Carbon::parse($request->input('transaction_from'))->startOfDay() 
@@ -34,6 +36,15 @@ class TransactionController extends Controller
         ->whereBetween('transaction_at', [$transactionFrom, $transactionTo])
         ->orderBy('transaction_at', 'asc')
         ->get();
+      
+      $isPrint = $request->input('is_print') ?? false;
+      if ($isPrint) {
+        return view('transaction.pdf', [
+          'transaction_from' =>  $request->input('transaction_from'),
+          'transaction_to' =>  $request->input('transaction_to'),
+          'transactions' => $transactions
+        ]);
+      }
 
       $accounts = Account::where('user_id', Auth::id())->get();
       return view('transaction.index', [
