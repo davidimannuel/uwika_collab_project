@@ -34,6 +34,7 @@
                   {{ ($user->status == \App\Models\User::STATUS_ACTIVE) ? 'Inactivate' : 'Activate' }}
                 </button>
               </form>
+              <a href="{{ route('admin.users.password.edit',$user->id) }}" class="btn btn-primary">Password</a>
             </td>
           </tr>
           @endforeach

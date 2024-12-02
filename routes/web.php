@@ -82,5 +82,7 @@ Route::middleware(['auth'])->group(function () {
   Route::prefix('admin')->middleware(EnsureIsAdmin::class)->group(function () {
     Route::get('/users', [UserAdminController::class,'index'])->name('admin.users.index');
     Route::patch('/users/{id}', [UserAdminController::class,'patchStatus'])->name('admin.users.status.update');
+    Route::get('/users/{id}/password', [UserAdminController::class,'editPassword'])->name('admin.users.password.edit');
+    Route::patch('/users/{id}/password', [UserAdminController::class,'patchPassword'])->name('admin.users.password.update');
   });
 });

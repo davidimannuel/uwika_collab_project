@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserAdminController extends Controller
 {
@@ -28,5 +29,25 @@ class UserAdminController extends Controller
     $user->save();
 
     return redirect(route('admin.users.index'));
+  }
+  
+  public function editPassword($id) {
+    $user = User::where('id', $id)->firstOrFail();
+    return view('admin.user.password',[
+      'user' => $user
+    ]);
+  } 
+
+  public function patchPassword(Request $request, $id)
+  {
+    $validated = $request->validate([
+      'new_password' => 'required|min:8|confirmed',
+    ]);
+
+    $user = User::where('id', $id)->firstOrFail();
+    $user->password = Hash::make($validated['new_password']);
+    $user->save();
+
+    return redirect(route('admin.users.password.edit',$id))->with('success-alert', 'Profile updated successfully.');
   }
 }
