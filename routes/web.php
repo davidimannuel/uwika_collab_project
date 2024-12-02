@@ -75,7 +75,7 @@ Route::middleware(['auth'])->group(function () {
   Route::resource('budgets',BudgetController::class);
   Route::get('budgets/transactions/{budget}',[BudgetTransactionController::class, 'index'])->name('budgets.transactions.index');
   // Transactions
-  Route::get('/transactions',[TransactionController::class, 'index'])->name('transactions.index');
+  Route::match(['get', 'post'],'/transactions',[TransactionController::class, 'index'])->name('transactions.index');
   // for Admin only is_admin = true
   Route::prefix('admin')->middleware(EnsureIsAdmin::class)->group(function () {
     Route::get('/users', [UserAdminController::class,'index'])->name('admin.users.index');
