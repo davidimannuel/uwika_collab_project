@@ -1,0 +1,26 @@
+@startuml AplikasiKeuangan
+
+actor Admin
+actor User
+
+User --> (Register)
+User --> Admin
+Admin --> (Activate User)
+Admin --> (Inactive User)
+
+User --> (Login)
+Admin --> (Login)
+
+User --> (Logout)
+Admin --> (Logout)
+
+User --> (Account Management)
+User --> (Category Management)
+User --> (Transaction Management)
+User --> (Debt Management)
+User --> (Budget Management)
+
+User --> (Password Management)
+Admin --> (Password Management)
+
+@enduml

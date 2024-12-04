@@ -13,9 +13,12 @@
           <div class="card-body">
             <h5 class="card-title">{{ $budget->name }}</h5>
             <p class="card-text">{{ $budget->transaction_type == \App\Models\Transaction::TYPE_DEBIT ? 'Income' : 'Expenses' }}</p>
-            <p class="card-text">{{ $budget->category->name }}</p>
-            <p class="card-text">Rp. {{ number_format($budget->threshold_amount, 0, ',', '.') }}</p>
-            <p class="card-text">Rp. {{ number_format($budget->collected_amount, 0, ',', '.') }}</p>
+            <p class="card-text"><b>Category: </b> {{ $budget->category->name }}</p>
+            <p class="card-text"><b>Threshold: </b> Rp. {{ number_format($budget->threshold_amount, 0, ',', '.') }}</p>
+            <p class="card-text"><b>Collected: </b> Rp. {{ number_format($budget->collected_amount, 0, ',', '.') }}</p>
+            @if ($budget->collected_amount > $budget->threshold_amount)
+              <span class="badge text-bg-warning">Limit Exceed Rp. {{ number_format($budget->collected_amount - $budget->threshold_amount, 0, ',', '.') }}</span> 
+            @endif
           </div>
           <div class="card-body d-inline-flex">
             <a href="{{ route('budgets.transactions.index',$budget->id) }}" class="btn btn-success me-1">Transactions</a>
