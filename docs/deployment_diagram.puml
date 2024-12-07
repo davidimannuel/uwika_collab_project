@@ -4,13 +4,13 @@ node "Client Device" {
 }
 
 node "Ubuntu" {
-  node "Apache2 (Reverse Proxy)" {
+  node "Apache2" {
     [Apache2 Container]
     node "Web Server (Laravel)" {
         [Laravel Application]
     }
   }
-  
+
   node "Docker Host" {
     node "Database Server" {
         [PostgreSQL Database]
