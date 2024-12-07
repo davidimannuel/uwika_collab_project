@@ -1,0 +1,20 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user membuat kategori
+  User -> System : klik menu category
+  User <-- System : redirect ke menu category
+  User -> System : klik tombol create
+  User <-- System : redirect ke halaman tambah category
+  User -> System : masukkan data (nama), klik save 
+  System -> System : validate data
+  alt data tidak lengkap
+  User <-- System : tampilkan error validasi
+  end
+  System -> System : process data
+  System -> DB : simpan data
+  System <-- DB : data berhasil disimpan
+  User <-- System : notifikasi data berhasil disimpan
+end
+@enduml

@@ -1,0 +1,24 @@
+@startuml kelompok1
+actor User
+actor Admin
+participant System
+database DB
+group aktivasi akun user
+  User -> Admin: mengirimkan email untuk aktivasi akun
+  Admin -> Admin : checking email
+  Admin -> System: ke menu user
+  System -> DB : get list user
+  System <-- DB : data user
+  Admin <-- System : data user
+  Admin -> System : klik tombol activate
+  System -> System : validate data
+  System -> DB : update status user
+  alt database error
+  System <-- DB : database error
+  Admin <-- System : database error
+  end
+  System <-- DB : berhasil update
+  System --> Admin : aktivasi berhasil
+  Admin --> User : reply email aktivasi berhasil
+end
+@enduml

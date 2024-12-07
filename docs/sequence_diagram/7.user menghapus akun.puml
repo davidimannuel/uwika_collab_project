@@ -1,0 +1,24 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user menghapus akun (dompet)
+  User -> System : klik menu account
+  System -> DB : dapatkan semua data account
+  System <-- DB : berhasil dapat semua data account
+  User <-- System : redirect ke menu account, dan tampilkan data
+  User -> System : klik hapus pada data yang ingin di dihapus
+  System -> DB : ambil data transaksi pada account
+  System <-- DB : data berhasil di ambil
+  alt account sudah memiliki transaksi
+  User <-- System : tampilkan error validasi
+  end
+  System -> DB : menghapus data
+  alt database error
+  System <-- DB : error database
+  User <-- System : tampilkan error database
+  end
+  System <-- DB : data berhasil dihapus
+  User <-- System : notifikasi data berhasil dihapus
+end
+@enduml

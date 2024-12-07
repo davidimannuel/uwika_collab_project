@@ -1,0 +1,35 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user melakukan pembayaran hutang
+  User -> System : masuk ke menu "debt"
+  System -> DB : dapatkan semua data hutang
+  System <-- DB : berhasil dapat semua data
+  User -> System : pilih hutang lalu klik "repayment"
+  System -> DB : dapatkan data hutang
+  System <-- DB : berhasil dapat data hutang
+  User <-- System : redirect ke menu pembayaran, dan tampikan informasi hutang
+  User -> System : pilih hutang lalu klik "pay debt"
+  User <-- System : redirect ke menu pembayaran hutang
+  User -> System : masukkan data (account, transaction at, type, remark, amount, is_debt, debt_due_at, categories), lalu lalu klik "save"
+  System -> System : validasi data
+  System -> DB : dapatkan data hutang yg diproses
+  System <-- DB : berhasil dapat data hutang yg di proses
+  System -> System : proses data
+  alt user memasukkan jumlah lebih dari total hutang
+    System --> User : tampilkan error validasi
+  end
+  System -> DB : simpan data pembayaran
+  System <-- DB : data berhasil di simpan
+  alt user mencicil pembayaran hutang (amount != hutang)
+    System -> DB : update data hutang (status menjadi partial paid)
+    System <-- DB : berhasil di simpan
+  end
+  alt user melunasi pembayaran hutang (amount == hutang)
+    System -> DB : update data hutang (status menjadi paid)
+    System <-- DB : berhasil di simpan
+  end
+  User <-- System : notifikasi data berhasil disimpan
+end
+@enduml

@@ -1,0 +1,17 @@
+@startuml kelompok1
+actor "User / Admin" as User
+participant System
+database DB
+group login aplikasi
+  User -> System: masukkan data log in (email dan password)
+  System -> System : validasi data
+  System -> DB : get credential user
+  alt wrong credential
+  DB --> System : credential not found
+  User <-- System : error validasi
+  end
+  System <-- DB : credential ditemukan
+  System -> System : check credential
+  System --> User : login berhasil berhasil ke dashboard User
+end
+@enduml

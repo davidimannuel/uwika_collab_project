@@ -1,0 +1,19 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user menghapus kategori
+  User -> System : klik menu category
+  System -> DB : dapatkan semua data category
+  System <-- DB : berhasil dapat semua data category
+  User <-- System : redirect ke menu category, dan tampilkan data
+  User -> System : klik hapus pada data yang ingin di dihapus
+  System -> DB : menghapus data
+  alt database error
+  System <-- DB : error database
+  User <-- System : tampilkan error database
+  end
+  System <-- DB : data berhasil dihapus
+  User <-- System : notifikasi data berhasil dihapus
+end
+@enduml

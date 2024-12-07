@@ -1,0 +1,38 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user membuat transaksi
+  User -> System : klik menu account
+  System -> DB : dapatkan semua data account
+  System <-- DB : berhasil dapat semua data account
+  User <-- System : redirect ke menu account, dan tampilkan data account
+  User -> System : pilih account yang akan dibuat transaksi
+  System -> DB : dapatkan data account
+  System <-- DB : berhasil dapat data account
+  User <-- System : redirect ke menu transaksi, dan tampikan informasi account
+  User -> System : klik tombol create
+  User <-- System : redirect ke menu create transaksi
+  User -> System : masukan data (transaction at, type, remark, amount, is_debt, debt_due_at, categories), klik simpan
+  System -> System: validasi data
+  alt data tidak lengkap
+  User <-- System : tampilkan error validasi
+  end
+  System -> System : process data
+  System -> DB : simpan data transaksi
+  System <-- DB : data transaksi berhasil disimpan
+  alt ada data category
+  System -> System : ambil data budget
+  System <-- DB : berhasil ambil data budget
+    alt data budget ada
+      System -> DB: update data budget
+      System <-- DB: berhasil simpan data budget
+    end
+  end
+  alt user mencentang is debt
+  System -> DB : simpan data transaksi hutang / piutang
+  System <-- DB : data transaksi hutang / piutang berhasil disimpan
+  end
+  User <-- System : notifikasi data berhasil disimpan
+end
+@enduml

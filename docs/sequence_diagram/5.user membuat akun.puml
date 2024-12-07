@@ -1,0 +1,20 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user membuat akun (dompet)
+  User -> System : klik menu account
+  User <-- System : redirect ke menu account
+  User -> System : klik tombol create
+  User <-- System : redirect ke halaman tambah account
+  User -> System : masukkan data (nama), klik save 
+  System -> System : validate data
+  alt data tidak lengkap
+  User <-- System : tampilkan error validasi
+  end
+  System -> System : process data
+  System -> DB : simpan data
+  System <-- DB : data berhasil disimpan
+  User <-- System : notifikasi data berhasil disimpan
+end
+@enduml

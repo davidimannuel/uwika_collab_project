@@ -1,0 +1,24 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user mengubah akun (dompet)
+  User -> System : klik menu account
+  System -> DB : dapatkan semua data account
+  System <-- DB : berhasil dapat semua data account
+  User <-- System : redirect ke menu account, dan tampilkan data
+  User -> System : klik edit pada data yang ingin di diubah
+  System -> DB : dapatkan data account
+  System <-- DB : berhasil dapat data account
+  User <-- System : redirect ke halaman edit account, dan tampilkan data
+  User -> System : masukkan data (nama), klik save 
+  System -> System : validate data
+  alt data tidak lengkap
+  User <-- System : tampilkan error validasi
+  end
+  System -> System : process data
+  System -> DB : simpan data
+  System <-- DB : data berhasil disimpan
+  User <-- System : notifikasi data berhasil disimpan
+end
+@enduml

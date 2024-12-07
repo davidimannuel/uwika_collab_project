@@ -1,0 +1,16 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group daftar akun baru
+  User -> System: masukkan data registrasi (nama, email, password, dan konfirmasi password)
+  System -> System : validasi data
+  alt data kurang lengkap
+    User <-- System : error validasi
+  end
+  System -> System : proses data
+  System -> DB : simpan data
+  DB --> System : data berhasil disimpan
+  System --> User : registrasi berhasil
+end
+@enduml

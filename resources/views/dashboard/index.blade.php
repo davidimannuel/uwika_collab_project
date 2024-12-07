@@ -84,14 +84,14 @@
                 datasets: [
                   {
                     label: 'Income',
-                    borderColor: 'rgba(211, 0, 0, 0.8)',
+                    borderColor: 'rgba(0, 164, 24, 0.8)',
                     type: 'line',
                     data: incomeData,
                     borderWidth: 1
                   },
                   {
                     label: 'Expenses',
-                    borderColor: 'rgba(0, 164, 24, 0.8)',
+                    borderColor: 'rgba(211, 0, 0, 0.8)',
                     type: 'line',
                     data: expenseData,
                     borderWidth: 1

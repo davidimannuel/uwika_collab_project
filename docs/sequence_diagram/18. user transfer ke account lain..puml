@@ -1,0 +1,24 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user transfer saldo ke account lain 
+  User -> System : masuk ke menu "account"
+  System -> DB : dapatkan data semua account
+  System <-- DB : berhasil dapatkan data semua account
+  User <-- System : redirect ke halaman account, dan tampilkan data
+  User -> System : memilih account, lalu klik "transfer"
+  System -> DB : dapatkan data account
+  System <-- DB : berhasil dapatkan data account
+  User <-- System : redirect ke halaman transfer, dan tampilkan data
+  System --> User : masukkan data (destination, transaction at, amount, admin fee), klik save
+  System -> System : validate data
+  alt nominal amount melebihi nominal saldo
+  System --> User :error validasi
+  end
+  System -> System : process data
+  System -> DB : simpan data
+  System <-- DB : data berhasil disimpan
+  User <-- System :notifikasi data berhasil disimpan
+end
+@enduml

@@ -1,0 +1,21 @@
+@startuml kelompok1
+actor User
+participant System
+database DB
+group user inquiry / cetak transaksi
+  User -> System : klik menu transaction
+  System -> DB : dapatkan semua data transaksi hari ini
+  System <-- DB : berhasil dapat semua data
+  User <-- System : redirect ke menu transaction, dan tampilkan data account
+  User -> System : pilih filter (account, transaction from, transaction to, print)
+  System -> DB : dapatkan data transaksi
+  System <-- DB : berhasil dapat data transaksi
+  User <-- System: tampilkan data transaksi
+  alt "print" dicentang
+    System -> System: generate data kedalam PDF
+    User <-- System: tampilkan data dalam PDF
+    User -> System: klik simpan
+    User <-- System: berikan data PDF
+  end
+end
+@enduml

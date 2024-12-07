@@ -1,1 +1,7 @@
+1. Natasha : use case diagram & Spesification
+2. Doni : class diagram & sequence diagram
+3. kelvin : Activity diagram & deployment diagram
+4. David: project
+
 - (google docs) https://docs.google.com/document/d/1srzW425q_qVpAd-wzsy4I04Be0mIdBm8Za-SA7_3Hhc/edit?tab=t.0
+

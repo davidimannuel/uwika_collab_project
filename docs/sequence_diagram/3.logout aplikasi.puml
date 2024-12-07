@@ -1,0 +1,13 @@
+@startuml kelompok1
+actor "User / Admin" as User
+participant System
+database DB
+group logout aplikasi
+  User -> System: klik menu logout
+  System -> System : hapus session
+  alt server error
+    User <-- System : error sistem
+  end
+  System --> User : logout berhasil berhasil ke halaman utama
+end
+@enduml
