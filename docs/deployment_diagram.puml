@@ -11,7 +11,7 @@ node "Ubuntu" {
     }
   }
 
-  node "Docker Host" {
+  node "Docker Container" {
     node "Database Server" {
         [PostgreSQL Database]
     }
