@@ -1,0 +1,92 @@
+https://dbdiagram.io/d/Aplikasi-Keuangan-Pribadi-67170c8d97a66db9a3ca2fc3
+
+Table users {
+  id int [pk]
+  name varchar
+  email varchar [unique]
+  email_verified_at timestamp [null]
+  password varchar
+  is_admin boolean [default: false]
+  status varchar [default: "inactive"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id int [pk]
+  user_id int [ref: > users.id]
+  name varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table accounts {
+  id int [pk]
+  user_id int [ref: > users.id]
+  name varchar
+  balance decimal [default: 0, note: "20 total, 3 decimal places"]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table transactions {
+  id int [pk]
+  account_id int [ref: > accounts.id]
+  remark varchar
+  type varchar
+  amount decimal [default: 0, note: "20 total, 3 decimal places"]
+  transaction_at timestamp
+  is_debt boolean [default: false]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table transaction_categories {
+  id int [pk]
+  transaction_id int [ref: > transactions.id]
+  category_id int [ref: > categories.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table debts {
+  id int [pk]
+  transaction_id int [ref: > transactions.id]
+  status varchar [default: "unpaid", note: "unpaid, partial_paid, paid"]
+  paid_amount decimal [default: 0, note: "20 total, 3 decimal places"]
+  due_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table debt_repayments {
+  id int [pk]
+  debt_id int [ref: > debts.id]
+  transaction_id int [ref: > transactions.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table budgets {
+  id int [pk]
+  category_id int [ref: > categories.id]
+  name varchar
+  transaction_type varchar
+  collected_amount decimal [default: 0, note: "20 total, 3 decimal places"]
+  threshold_amount decimal [note: "20 total, 3 decimal places"]
+  start_at timestamp
+  end_at timestamp
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table budget_transactions {
+  id int [pk]
+  budget_id int [ref: > budgets.id]
+  transaction_id int [ref: > transactions.id]
+  created_at timestamp
+  updated_at timestamp
+}
+
+
+Ref: "debts"."transaction_id" < "debts"."id"

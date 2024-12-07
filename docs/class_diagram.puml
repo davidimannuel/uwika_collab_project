@@ -1,0 +1,186 @@
+' Visibility Markers: Visibility markers indicate the accessibility of attributes and methods within a class.
+' + (Public): The attribute or method is accessible from any class.
+' - (Private): The attribute or method is only accessible within the same class.
+' # (Protected): The attribute or method is accessible within the same class and its subclasses.
+' ~ (Package): The attribute or method is accessible within the same package.
+
+' alphanumeric = alphabet and number
+@startuml aplikasi_pencatatan_keuangan
+
+class UserAccount {
+    - id : number
+    - name : alphanumeric
+    - email : alphanumeric
+    - password : alphanumeric
+    - status : alphanumeric
+    --
+    # getId() : number
+    # setId(id : number) : (success / failed)
+    # getName() : alphanumeric
+    # setName(name : alphanumeric) : (success / failed)
+    # getEmail() : alphanumeric
+    # setEmail(email : alphanumeric) : (success / failed)
+    # getPassword() : alphanumeric
+    # setPassword(password : alphanumeric) : (success / failed)
+    # comparePassword(inputPassword : alphanumeric) : bool
+}
+
+class User {
+    - status : alphabet
+    --
+    + createAccount(data Account)
+    + readAccount() : Account
+    + editAccount(data Account)
+    + deleteAccount(accountId number)
+    + createCategory(data Category)
+    + readCategory() : Category
+    + editCategory(data Category)
+    + deleteCategory(categoryId number)
+    + createBudget(data Budget)
+    + readBudget() : Budget
+    + deleteBudget(budgetId number)
+    + createTransaction(data Transaction)
+}
+
+UserAccount <|-- User : extends
+
+class Admin{
+    --
+    + activateUser(user_id : number) : (success / failed)
+    + deactivateUser(user_id : number) : (success / failed)
+    + changeUserPassword(password: alphanumeric) : (success / failed)
+}
+
+UserAccount <|-- Admin : extends
+
+class Category {
+    - id : number
+    - userId : number
+    - name : alphanumeric
+    --
+    + getId() : number
+    + setId(id : number) : (success / failed)
+    + getUserId() : number
+    + setUserId(userId : number) : (success / failed)
+    + getName() : alphanumeric
+    + setName(name : alphanumeric) : (success / failed)
+}
+
+User "1" --> "0..*" Category : have
+
+class Account {
+    - id : number
+    - userId : number
+    - name : alphanumeric
+    - balance : decimal
+    --
+    + getId() : number
+    + setId(id : number) : (success / failed)
+    + getUserId() : number
+    + setUserId(userId : number) : (success / failed)
+    + getName() : alphanumeric
+    + setName(name : alphanumeric) : (success / failed)
+    + getBalance() : decimal
+    + setBalance(balance : decimal) : (success / failed)
+    + createTransaction(data : Transaction) : (success / failed)
+    + transfer(destinationAccount Account, data : Transaction) : (success / failed)
+}
+
+User "1" --> "0..*" Account : have
+
+class Transaction {
+    + id : number
+    + accountId : number
+    + remark : alphanumeric
+    + type : alphanumeric
+    + amount : decimal
+    + transaction_at : timestamp
+    --
+    + getType() : alphanumeric
+    + setType(type : alphanumeric) : (success / failed)
+    + getAmount() : decimal
+    + setAmount(amount : decimal) : (success / failed)
+    + create(account Account, remark alphanumeric, type alphanumeric, amount decimal, transaction_at timestamp) : (success / failed)
+}
+
+Account "1" --> "0..*" Transaction : have
+
+class Debt {
+    - transactionId : number
+    - status : alphabet
+    - paidAmount : decimal
+    - dueAt : timestamp
+    --
+    + getStatus() : alphanumeric
+    + setStatus(status : alphanumeric) : (success / failed)
+    + getDueAt() : timestamp
+    + setDueAt(dueAt : timestamp) : (success / failed)
+    + linkToTransaction(transactionId : number) : (success / failed)
+    + pay(amount : decimal) : (success / failed)
+}
+
+Transaction <|-- Debt : extends
+Transaction "1" --> "0..1" Debt : linked
+
+class DebtRepayment {
+    - transactionId : number
+    - debtId : number
+    --
+    + linkToTransaction(transactionId : number) : (success / failed)
+    + linkToDebt(debtId : number) : (success / failed)
+}
+
+Transaction "1" <|-- DebtRepayment : extends
+DebtRepayment "1" --> "1" Transaction : linked
+Debt "1" --> "0..*" DebtRepayment : repayment
+
+
+class Budget {
+    - id : number
+    - categoryId : number
+    - name : alphanumeric
+    - transactionType : alphabet
+    - collectedAmount : decimal
+    - thresholdAmount : decimal
+    - startAt : timestamp
+    - endAt : timestamp
+    --
+    + getName() : alphanumeric
+    + setName(name : alphanumeric) : (success / failed)
+    + getCategory() : alphanumeric
+    + linkToCategory(categoryId : number) : (success / failed)
+    + getTransactionType() : alphabet
+    + setTransactionType(type : alphabet) : (success / failed)
+    + addCollectedAmount(amount : decimal) : (success / failed)
+    + isThresholdExceeded() : bool
+}
+
+class BudgetTransaction {
+    - transactionId : number
+    - budgetId : number
+    --
+    + linkToBudget(budgetId : number) : (success / failed)
+    + linkToTransaction(transactionId : number) : (success / failed)
+}
+Budget "1" --> "0..*" BudgetTransaction : have
+Budget "1" --> "1" Category : belongs to
+Category "1" --> "0..*" Budget : have
+Transaction <|-- BudgetTransaction : extends
+BudgetTransaction "1" --> "1" Transaction : linked
+
+class TransactionCategory {
+    - id : number
+    - transactionId : number
+    - categoryId : number
+    - created_at : timestamp
+    - updated_at : timestamp
+    --
+    + linkToTransaction(transactionId : number) : (success / failed)
+    + linkToCategory(categoryId : number) : (success / failed)
+}
+
+Transaction "1" --> "0..*" TransactionCategory : categorizes
+TransactionCategory "0..*" --> "1" Category : links
+
+
+@enduml
