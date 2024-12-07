@@ -29,9 +29,8 @@
         <x-form-field>
           <x-form-label for="type">Type</x-form-label>
           <select class="form-select" id="type" name="type" readonly>
-            <option value="{{ $debt->transaction->type == \App\Models\Transaction::TYPE_DEBIT ? 'credit' : 'debit' }}" selected>
-              {{ $debt->transaction->type == \App\Models\Transaction::TYPE_DEBIT ? 'Expenses' : 'Income' }}
-            </option>
+            <option value="{{\App\Models\Transaction::TYPE_DEBIT}}" {{ $debt->transaction->type == \App\Models\Transaction::TYPE_CREDIT ? 'selected' : '' }}>Income</option>
+            <option value="{{\App\Models\Transaction::TYPE_CREDIT}}" {{ $debt->transaction->type == \App\Models\Transaction::TYPE_DEBIT ? 'selected' : '' }}>Expenses</option>
           </select>
           <x-form-error name='type'/>
         </x-form-field>

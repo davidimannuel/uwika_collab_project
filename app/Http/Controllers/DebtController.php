@@ -127,6 +127,7 @@ class DebtController extends Controller
         ]);
         // repayment logic
         $debt->storeRepayment([
+          'type' => $request->input('type'),
           'amount' => $amount,
           'transaction_id' => $newTransaction->id,
         ]);

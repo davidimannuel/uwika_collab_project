@@ -38,8 +38,12 @@ class Debt extends Model
 
   public function storeRepayment(array $repayment)
   {
-    $transactionId = $repayment['transaction_id'];
+    $type = $repayment['type'] ?? Transaction::TYPE_DEBIT;
     $amount = $repayment['amount'];
+    if ($type == Transaction::TYPE_CREDIT) {
+      $amount = $amount * -1; // make it negative
+    }
+    $transactionId = $repayment['transaction_id'];
     $this->paid_amount += $amount;
     if ($this->paid_amount > $this->transaction->amount) {
       throw new PaidAmountGreaterThanDebtException;
