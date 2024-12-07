@@ -1,10 +1,7 @@
-https://dbdiagram.io/d/Aplikasi-Keuangan-Pribadi-67170c8d97a66db9a3ca2fc3
-
 Table users {
   id int [pk]
   name varchar
   email varchar [unique]
-  email_verified_at timestamp [null]
   password varchar
   is_admin boolean [default: false]
   status varchar [default: "inactive"]
