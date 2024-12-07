@@ -1,0 +1,25 @@
+@startuml deployment
+node "Client Device" {
+    [Browser]
+}
+
+node "Ubuntu" {
+  node "Apache2 (Reverse Proxy)" {
+    [Apache2 Container]
+    node "Web Server (Laravel)" {
+        [Laravel Application]
+    }
+  }
+  
+  node "Docker Host" {
+    node "Database Server" {
+        [PostgreSQL Database]
+    }
+}
+
+}
+
+[Browser] --> [Apache2 Container]: HTTP/HTTPS
+[Apache2 Container] --> [Laravel Application]: HTTP
+[Laravel Application] --> [PostgreSQL Database]: SQL Queries
+@enduml
