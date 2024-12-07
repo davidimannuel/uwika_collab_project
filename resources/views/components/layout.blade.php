@@ -9,6 +9,13 @@
     @stack('custom-css')
   </head>
   <body>
+    @auth
+      @if (!auth()->user()->is_admin && auth()->user()->status != \App\Models\User::STATUS_ACTIVE)
+      <div class="alert alert-danger" role="alert">
+        Please ask admin to activate your user account for access full feature
+      </div>
+      @endif    
+    @endauth
     @props(['hideNavbar' => false])
     @if (!$hideNavbar)
     <div class="container">
@@ -28,11 +35,11 @@
             @if (auth()->user()->is_admin)    
               <x-nav-item href="{{ route('admin.users.index') }}" :active="request()->is('admin/users*')">User</x-nav-item>
             @else
-              <x-nav-item href="{{ route('accounts.index') }}" :active="request()->is('accounts*')">Account</x-nav-item>
-              <x-nav-item href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
-              <x-nav-item href="{{ route('debts.index') }}" :active="request()->is('debts*')">Debt</x-nav-item>    
-              <x-nav-item href="{{ route('budgets.index') }}" :active="request()->is('budgets*')">Budget</x-nav-item>    
-              <x-nav-item href="{{ route('transactions.index') }}" :active="request()->is('transactions*')">Transaction</x-nav-item>    
+              <x-nav-item :disabled="auth()->user()->status != \App\Models\User::STATUS_ACTIVE" href="{{ route('accounts.index') }}" :active="request()->is('accounts*')">Account</x-nav-item>
+              <x-nav-item :disabled="auth()->user()->status != \App\Models\User::STATUS_ACTIVE" href="{{ route('categories.index') }}" :active="request()->is('categories')">Category</x-nav-item>    
+              <x-nav-item :disabled="auth()->user()->status != \App\Models\User::STATUS_ACTIVE" href="{{ route('debts.index') }}" :active="request()->is('debts*')">Debt</x-nav-item>    
+              <x-nav-item :disabled="auth()->user()->status != \App\Models\User::STATUS_ACTIVE" href="{{ route('budgets.index') }}" :active="request()->is('budgets*')">Budget</x-nav-item>    
+              <x-nav-item :disabled="auth()->user()->status != \App\Models\User::STATUS_ACTIVE" href="{{ route('transactions.index') }}" :active="request()->is('transactions*')">Transaction</x-nav-item>    
             @endif
           @endauth
         </ul>

@@ -13,6 +13,7 @@ use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\EnsureIsAdmin;
+use App\Http\Middleware\EnsureUserIsActive;
 use App\Models\BudgetTransaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -58,26 +59,28 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/dashboard/incomeExpensesThisYearByMonth',[DashboardController::class, 'incomeExpensesThisYearByMonth'])->name('dashboard.incomeExpensesThisYearByMonth');
   Route::get('/dashboard/incomeExpensesThisYearByAccount',[DashboardController::class, 'incomeExpensesThisYearByAccount'])->name('dashboard.incomeExpensesThisYearByAccount');
   Route::get('/dashboard/incomeExpensesByCategoryThisMonth',[DashboardController::class, 'incomeExpensesByCategoryThisMonth'])->name('dashboard.incomeExpensesByCategoryThisMonth');
-  // Category
-  Route::resource('categories',CategoryController::class);
-  // Account
-  Route::resource('accounts',AccountController::class);
-  Route::get('/accounts/{account}/transfer',[AccountController::class, 'transfer'])->name('accounts.transfer');
-  Route::post('/accounts/{account}/transfer',[AccountController::class, 'processTransfer'])->name('accounts.processTransfer');
-  // Account Transaction
-  Route::get('/accounts/{account}/transactions',[AccountTransactionController::class, 'index'])->name('accounts.transactions.index');
-  Route::get('/accounts/{account}/transactions/create',[AccountTransactionController::class, 'create'])->name('accounts.transactions.create');
-  Route::post('/accounts/{account}/transactions',[AccountTransactionController::class, 'store'])->name('accounts.transactions.store');
-  // Debt
-  Route::get('/debts', [DebtController::class, 'index'])->name('debts.index');
-  Route::get('/debts/{debt:transaction_id}', [DebtController::class, 'show'])->name('debts.show');
-  Route::get('/debts/{debt:id}/repayments', [DebtController::class, 'createRepayment'])->name('debts.repayments.create');
-  Route::post('/debts/{debt:id}/repayments', [DebtController::class, 'storeRepayment'])->name('debts.repayments.store');
-  // Budget
-  Route::resource('budgets',BudgetController::class);
-  Route::get('budgets/transactions/{budget}',[BudgetTransactionController::class, 'index'])->name('budgets.transactions.index');
-  // Transactions
-  Route::match(['get', 'post'],'/transactions',[TransactionController::class, 'index'])->name('transactions.index');
+  Route::middleware(EnsureUserIsActive::class)->group(function(){
+    // Category
+    Route::resource('categories',CategoryController::class);
+    // Account
+    Route::resource('accounts',AccountController::class);
+    Route::get('/accounts/{account}/transfer',[AccountController::class, 'transfer'])->name('accounts.transfer');
+    Route::post('/accounts/{account}/transfer',[AccountController::class, 'processTransfer'])->name('accounts.processTransfer');
+    // Account Transaction
+    Route::get('/accounts/{account}/transactions',[AccountTransactionController::class, 'index'])->name('accounts.transactions.index');
+    Route::get('/accounts/{account}/transactions/create',[AccountTransactionController::class, 'create'])->name('accounts.transactions.create');
+    Route::post('/accounts/{account}/transactions',[AccountTransactionController::class, 'store'])->name('accounts.transactions.store');
+    // Debt
+    Route::get('/debts', [DebtController::class, 'index'])->name('debts.index');
+    Route::get('/debts/{debt:transaction_id}', [DebtController::class, 'show'])->name('debts.show');
+    Route::get('/debts/{debt:id}/repayments', [DebtController::class, 'createRepayment'])->name('debts.repayments.create');
+    Route::post('/debts/{debt:id}/repayments', [DebtController::class, 'storeRepayment'])->name('debts.repayments.store');
+    // Budget
+    Route::resource('budgets',BudgetController::class);
+    Route::get('budgets/transactions/{budget}',[BudgetTransactionController::class, 'index'])->name('budgets.transactions.index');
+    // Transactions
+    Route::match(['get', 'post'],'/transactions',[TransactionController::class, 'index'])->name('transactions.index');
+  });
   // for Admin only is_admin = true
   Route::prefix('admin')->middleware(EnsureIsAdmin::class)->group(function () {
     Route::get('/users', [UserAdminController::class,'index'])->name('admin.users.index');
