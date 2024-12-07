@@ -5,7 +5,7 @@ node "Client Device" {
 
 node "Ubuntu" {
   node "Apache2" {
-    [Apache2]
+    [Apache2 Container]
     node "Web Server (Laravel)" {
         [Laravel Application]
     }
@@ -19,7 +19,7 @@ node "Ubuntu" {
 
 }
 
-[Browser] --> [Apache2]: HTTP/HTTPS
-[Apache2] --> [Laravel Application]: HTTP
+[Browser] --> [Apache2 Container]: HTTP/HTTPS
+[Apache2 Container] --> [Laravel Application]: HTTP
 [Laravel Application] --> [PostgreSQL Database]: SQL Queries
 @enduml
