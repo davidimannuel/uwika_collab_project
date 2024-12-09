@@ -11,7 +11,7 @@ group user transfer saldo ke account lain
   System -> DB : dapatkan data account
   System <-- DB : berhasil dapatkan data account
   User <-- System : redirect ke halaman transfer, dan tampilkan data
-  System --> User : masukkan data (destination, transaction at, amount, admin fee), klik save
+  User -> System : masukkan data (destination, transaction at, amount, admin fee), klik save
   System -> System : validate data
   alt nominal amount melebihi nominal saldo
   System --> User :error validasi
