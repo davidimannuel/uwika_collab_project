@@ -119,7 +119,6 @@ class Debt {
     + pay(amount : decimal) : (success / failed)
 }
 
-Transaction <|-- Debt : extends
 Transaction "1" --> "0..1" Debt : linked
 
 class DebtRepayment {
