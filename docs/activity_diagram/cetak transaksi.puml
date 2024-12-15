@@ -1,0 +1,25 @@
+@startuml
+title Activity Diagram - Inquiry / Cetak Transaksi
+start
+
+:User mengklik menu Transaction;
+:Sistem mengambil semua data transaksi hari ini dari database;
+:Sistem menampilkan data transaksi ke User;
+
+:User memilih filter 
+(Account, Transaction From, Transaction To, Print);
+:Sistem mengambil data transaksi berdasarkan filter yang dipilih;
+
+:Sistem menampilkan hasil filter ke User;
+
+if (Print dicentang?) then (Ya)
+    :Sistem menghasilkan data transaksi dalam format PDF;
+    :Sistem menampilkan data dalam PDF;
+    :User mengklik tombol Simpan;
+    :Sistem memberikan file PDF ke User;
+else (Tidak)
+    :Proses selesai tanpa generate PDF;
+endif
+
+stop
+@enduml

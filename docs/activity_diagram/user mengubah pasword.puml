@@ -1,0 +1,32 @@
+@startuml
+title Activity Diagram - User Mengubah Password
+start
+
+:User masuk ke menu Profile;
+:Sistem mengambil data profile dari database;
+:Sistem menampilkan data profile ke User;
+
+:User memasukkan:
+- Current Password
+- New Password
+- Confirm New Password
+dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Password kurang dari 8 karakter?) then (Ya)
+    :Error validasi: "Password harus minimal 8 karakter";
+    stop
+else (Tidak)
+    if (New Password berbeda dengan Confirm New Password?) then (Ya)
+        :Error validasi: "New Password dan Confirm New Password tidak cocok";
+        stop
+    else (Tidak)
+        :Sistem memproses data perubahan password;
+        :Sistem memperbarui password di database;
+        :Notifikasi: "Password berhasil diubah";
+    endif
+endif
+
+stop
+@enduml

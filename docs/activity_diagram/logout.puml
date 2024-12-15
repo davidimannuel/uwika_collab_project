@@ -1,0 +1,20 @@
+@startuml
+title Activity Diagram - Proses Logout Aplikasi
+start
+
+:User/Admin mengklik menu logout;
+
+:Sistem menerima permintaan logout;
+
+:Sistem mencoba menghapus session;
+
+if (Server error?) then (Ya)
+    :Error sistem: "Server error terjadi";
+    stop
+else (Tidak)
+    :Logout berhasil;
+    :User diarahkan ke halaman utama;
+endif
+
+stop
+@enduml

@@ -1,0 +1,33 @@
+@startuml
+title Activity Diagram - Proses Aktivasi Akun User
+start
+
+:Sistem mengirim email aktivasi ke user;
+
+:User menerima email aktivasi;
+:User mengeklik tautan aktivasi;
+
+:Sistem memvalidasi email aktivasi;
+
+if (Email valid?) then (Ya)
+    :Sistem mengarahkan Admin ke menu User;
+    :Admin memilih user yang akan diaktivasi;
+    :Sistem mendapatkan data user;
+    :Admin mengklik tombol Activate;
+    :Sistem memvalidasi data user;
+
+    if (Database error?) then (Ya)
+        :Error: "Database error";
+        stop
+    else (Tidak)
+        :Sistem memperbarui status user;
+        :Aktivasi berhasil;
+        :Sistem mengirim balasan ke User;
+    endif
+else (Tidak)
+    :Error: "Email tidak valid";
+    stop
+endif
+
+stop
+@enduml

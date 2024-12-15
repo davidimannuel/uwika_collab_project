@@ -1,0 +1,26 @@
+@startuml
+title Activity Diagram - Mengubah Akun (Dompet)
+start
+
+:User mengklik menu Account;
+:Sistem mengambil semua data Account dari database;
+:Sistem menampilkan semua data Account ke User;
+
+:User memilih data Account yang ingin diubah;
+:Sistem mengambil data Account yang dipilih;
+:Sistem menampilkan data Account ke halaman edit;
+
+:User mengubah data Account (misalnya nama) dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Data valid?) then (Ya)
+    :Sistem memproses data perubahan;
+    :Sistem menyimpan data ke database;
+    :Notifikasi: "Data berhasil disimpan";
+else (Tidak)
+    :Error: "Data tidak lengkap";
+endif
+
+stop
+@enduml

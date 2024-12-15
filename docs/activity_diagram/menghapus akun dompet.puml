@@ -1,0 +1,28 @@
+@startuml
+title Activity Diagram - Menghapus Akun (Dompet)
+start
+
+:User mengklik menu Account;
+:Sistem mengambil semua data Account dari database;
+:Sistem menampilkan semua data Account ke User;
+
+:User memilih data Account yang ingin dihapus;
+:Sistem mengambil data transaksi pada Account;
+
+if (Account memiliki transaksi?) then (Ya)
+    :Error validasi: "Account memiliki transaksi";
+    stop
+else (Tidak)
+    :Sistem mencoba menghapus data Account;
+
+    if (Database error?) then (Ya)
+        :Error database: "Penghapusan gagal";
+        stop
+    else (Tidak)
+        :Sistem berhasil menghapus data Account;
+        :Notifikasi: "Data berhasil dihapus";
+    endif
+endif
+
+stop
+@enduml

@@ -24,9 +24,9 @@ class Category extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function accounts(): BelongsToMany
+    public function transactionCategories(): BelongsToMany
     {
-        return $this->belongsToMany(Account::class, 'transaction_categories');
+        return $this->belongsToMany(Transaction::class, 'transaction_categories');
     }
 
     public function budgets(): HasMany

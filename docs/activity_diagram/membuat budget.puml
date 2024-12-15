@@ -1,0 +1,26 @@
+@startuml
+title Activity Diagram - Membuat Budget
+start
+
+:User mengklik menu Budget;
+:Sistem menampilkan halaman menu Budget;
+
+:User mengklik tombol Create;
+:Sistem mengarahkan ke halaman tambah Budget;
+
+:User memasukkan data Budget 
+(nama, kategori, threshold amount, jenis transaksi, waktu mulai, waktu akhir) 
+dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Data valid?) then (Ya)
+    :Sistem memproses data Budget;
+    :Sistem menyimpan data ke database;
+    :Notifikasi: "Data berhasil disimpan";
+else (Tidak)
+    :Error validasi: "Data tidak lengkap";
+endif
+
+stop
+@enduml

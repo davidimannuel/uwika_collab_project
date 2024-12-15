@@ -1,0 +1,27 @@
+@startuml
+title Activity Diagram - Proses Login Aplikasi
+start
+
+:User/Admin memasukkan data login 
+(email dan password);
+
+:Sistem memvalidasi data;
+
+if (Email atau password tidak ditemukan?) then (Ya)
+    :Error validasi: "Credential not found";
+    stop
+else (Tidak)
+endif
+
+:Sistem memeriksa credential user;
+
+if (Credential benar?) then (Ya)
+    :Login berhasil;
+    :User diarahkan ke dashboard;
+else (Tidak)
+    :Error validasi: "Wrong credential";
+    stop
+endif
+
+stop
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+title Activity Diagram - Membuat Kategori
+start
+
+:User mengklik menu Category;
+:Sistem menampilkan halaman menu Category;
+
+:User mengklik tombol Create;
+:Sistem mengarahkan ke halaman tambah Category;
+
+:User memasukkan data (nama) dan mengklik tombol Save;
+:Sistem memvalidasi data;
+
+if (Data valid?) then (Ya)
+    :Sistem memproses data;
+    :Sistem menyimpan data ke database;
+    :Notifikasi: "Data berhasil disimpan";
+else (Tidak)
+    :Error: "Data tidak lengkap";
+endif
+
+stop
+@enduml

@@ -38,9 +38,11 @@ class Debt extends Model
 
   public function storeRepayment(array $repayment)
   {
+    $debtType = $repayment['debt_type'] ?? Transaction::TYPE_DEBIT;
     $type = $repayment['type'] ?? Transaction::TYPE_DEBIT;
     $amount = $repayment['amount'];
-    if ($type == Transaction::TYPE_CREDIT) {
+    if (($debtType == Transaction::TYPE_DEBIT && $type == Transaction::TYPE_DEBIT) || 
+      ($debtType == Transaction::TYPE_CREDIT && $type == Transaction::TYPE_CREDIT)) {
       $amount = $amount * -1; // make it negative
     }
     $transactionId = $repayment['transaction_id'];

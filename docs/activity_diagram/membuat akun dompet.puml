@@ -1,0 +1,26 @@
+@startuml
+title Activity Diagram - Membuat Akun (Dompet)
+start
+
+:User mengklik menu Account;
+
+:Sistem mengarahkan ke menu Account;
+
+:User mengklik tombol Create;
+
+:Sistem mengarahkan ke halaman tambah Account;
+
+:User memasukkan data (nama) dan mengklik Save;
+
+:Sistem memvalidasi data;
+
+if (Data lengkap?) then (Ya)
+    :Sistem memproses data;
+    :Sistem menyimpan data ke database;
+    :Notifikasi: "Data berhasil disimpan";
+else (Tidak)
+    :Error validasi: "Data tidak lengkap";
+endif
+
+stop
+@enduml

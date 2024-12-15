@@ -1,0 +1,21 @@
+@startuml
+title Activity Diagram - Menghapus Budget
+start
+
+:User mengklik menu Budget;
+:Sistem mengambil semua data Budget dari database;
+:Sistem menampilkan semua data Budget ke User;
+
+:User memilih Budget yang ingin dihapus;
+:Sistem mencoba menghapus data Budget dari database;
+
+if (Database error?) then (Ya)
+    :Error: "Penghapusan gagal karena error database";
+    stop
+else (Tidak)
+    :Sistem berhasil menghapus data Budget;
+    :Notifikasi: "Data berhasil dihapus";
+endif
+
+stop
+@enduml

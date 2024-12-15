@@ -1,0 +1,26 @@
+@startuml
+title Activity Diagram - Mengubah Kategori
+start
+
+:User mengklik menu Category;
+:Sistem mengambil semua data kategori dari database;
+:Sistem menampilkan semua data kategori ke User;
+
+:User memilih kategori yang ingin diubah;
+:Sistem mengambil data kategori yang dipilih;
+:Sistem menampilkan data kategori ke halaman edit;
+
+:User memasukkan data kategori yang baru (misalnya nama) dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Data valid?) then (Ya)
+    :Sistem memproses data perubahan;
+    :Sistem menyimpan data ke database;
+    :Notifikasi: "Data berhasil disimpan";
+else (Tidak)
+    :Error: "Data tidak lengkap";
+endif
+
+stop
+@enduml

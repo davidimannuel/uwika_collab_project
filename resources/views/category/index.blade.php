@@ -2,6 +2,7 @@
   <x-slot:headingTitle>
     Category
   </x-slot>
+  <x-alert name='alert' type='danger'/>
   <div class="text-start">
     @can('create-category')
       <a href="{{ route('categories.create') }}" class="btn btn-success">Create</a>

@@ -1,0 +1,38 @@
+@startuml
+title Activity Diagram - Pembayaran Hutang
+start
+
+:User masuk ke menu Debt;
+:Sistem mengambil semua data hutang dari database;
+:Sistem menampilkan data hutang ke User;
+
+:User memilih hutang dan mengklik tombol Repayment;
+:Sistem menampilkan informasi hutang yang dipilih;
+
+:User mengklik tombol Pay Debt;
+:Sistem mengarahkan ke halaman pembayaran hutang;
+
+:User memasukkan data pembayaran 
+(Account, Transaction At, Type, Remark, Amount, Is Debt, Debt Due At, Categories) 
+dan mengklik tombol Save;
+
+:Sistem memvalidasi data pembayaran;
+
+if (Jumlah pembayaran lebih dari total hutang?) then (Ya)
+    :Error validasi: "Jumlah melebihi total hutang";
+    stop
+else (Tidak)
+    :Sistem memproses data pembayaran;
+    :Sistem menyimpan data pembayaran ke database;
+
+    if (Jumlah pembayaran == Total hutang) then (Ya)
+        :Sistem memperbarui status hutang menjadi Paid;
+        :Notifikasi: "Hutang telah dilunasi";
+    else (Tidak)
+        :Sistem memperbarui status hutang menjadi Partial Paid;
+        :Notifikasi: "Hutang sebagian telah dibayar";
+    endif
+endif
+
+stop
+@enduml

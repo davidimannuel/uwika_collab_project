@@ -1,0 +1,90 @@
+@startuml
+title Activity Diagram - Membuat Transaksi
+start
+
+:User mengklik menu Account;
+:Sistem mengambil semua data Account dari database;
+:Sistem menampilkan semua data Account ke User;
+
+:User memilih Account untuk transaksi;
+:Sistem mengambil data Account yang dipilih;
+:Sistem menampilkan informasi Account;
+
+:User mengklik tombol Create;
+:Sistem mengarahkan ke halaman Create Transaction;
+
+:User memasukkan data transaksi 
+(Transaction At, Type, Remark, Amount, Is Debt, Debt Due At, Categories) 
+dan mengklik tombol Simpan;
+
+:Sistem memvalidasi data;
+
+if (Data lengkap?) then (Ya)
+    :Sistem memproses data transaksi;
+    :Sistem menyimpan data transaksi ke database;
+
+    if (Ada kategori data?) then (Ya)
+        :Sistem mengambil data Budget terkait kategori;
+        if (Data Budget ada?) then (Ya)
+            :Sistem memperbarui data Budget;
+            :Notifikasi: "Budget diperbarui";
+        endif
+    endif
+
+    if (User mencentang Is Debt?) then (Ya)
+        :Sistem menyimpan data transaksi hutang/piutang;
+        :Notifikasi: "Hutang/Piutang berhasil disimpan";
+    endif
+
+    :Notifikasi: "Data transaksi berhasil disimpan";
+else (Tidak)
+    :Error validasi: "Data tidak lengkap";
+endif
+
+stop
+@enduml
+@startuml
+title Activity Diagram - Membuat Transaksi
+start
+
+:User mengklik menu Account;
+:Sistem mengambil semua data Account dari database;
+:Sistem menampilkan semua data Account ke User;
+
+:User memilih Account untuk transaksi;
+:Sistem mengambil data Account yang dipilih;
+:Sistem menampilkan informasi Account;
+
+:User mengklik tombol Create;
+:Sistem mengarahkan ke halaman Create Transaction;
+
+:User memasukkan data transaksi 
+(Transaction At, Type, Remark, Amount, Is Debt, Debt Due At, Categories) 
+dan mengklik tombol Simpan;
+
+:Sistem memvalidasi data;
+
+if (Data lengkap?) then (Ya)
+    :Sistem memproses data transaksi;
+    :Sistem menyimpan data transaksi ke database;
+
+    if (Ada kategori data?) then (Ya)
+        :Sistem mengambil data Budget terkait kategori;
+        if (Data Budget ada?) then (Ya)
+            :Sistem memperbarui data Budget;
+            :Notifikasi: "Budget diperbarui";
+        endif
+    endif
+
+    if (User mencentang Is Debt?) then (Ya)
+        :Sistem menyimpan data transaksi hutang/piutang;
+        :Notifikasi: "Hutang/Piutang berhasil disimpan";
+    endif
+
+    :Notifikasi: "Data transaksi berhasil disimpan";
+else (Tidak)
+    :Error validasi: "Data tidak lengkap";
+endif
+
+stop
+@enduml

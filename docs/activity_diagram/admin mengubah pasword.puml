@@ -1,0 +1,37 @@
+@startuml
+title Activity Diagram - Admin Mengubah Password User
+start
+
+:Admin menerima permintaan untuk mengubah password user;
+:Admin membuka email untuk mengecek permintaan perubahan password;
+
+:Admin masuk ke menu User Management;
+:Sistem mengambil semua data user dari database;
+:Sistem menampilkan daftar user ke Admin;
+
+:Admin memilih user yang akan diubah passwordnya;
+:Sistem mengarahkan ke halaman ubah password user;
+
+:Admin memasukkan:
+- New Password
+- Confirm New Password
+dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Password kurang dari 8 karakter?) then (Ya)
+    :Error validasi: "Password harus minimal 8 karakter";
+    stop
+else (Tidak)
+    if (New Password berbeda dengan Confirm New Password?) then (Ya)
+        :Error validasi: "New Password dan Confirm New Password tidak cocok";
+        stop
+    else (Tidak)
+        :Sistem memperbarui password user di database;
+        :Sistem memberikan notifikasi ke Admin bahwa password berhasil diubah;
+        :Sistem mengirimkan email konfirmasi perubahan password ke User;
+    endif
+endif
+
+stop
+@enduml

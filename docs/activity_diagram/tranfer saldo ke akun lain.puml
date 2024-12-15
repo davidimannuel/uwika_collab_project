@@ -1,0 +1,32 @@
+@startuml
+title Activity Diagram - Transfer Saldo ke Akun Lain
+start
+
+:User masuk ke menu Account;
+:Sistem mengambil data semua Account dari database;
+:Sistem menampilkan data Account ke User;
+
+:User memilih Account asal dan mengklik tombol Transfer;
+:Sistem mengambil data Account yang dipilih;
+:Sistem menampilkan halaman Transfer;
+
+:User memasukkan data transfer:
+- Destination Account
+- Transaction At
+- Amount
+- Admin Fee
+dan mengklik tombol Save;
+
+:Sistem memvalidasi data;
+
+if (Nominal Amount melebihi saldo?) then (Ya)
+    :Error validasi: "Saldo tidak mencukupi";
+    stop
+else (Tidak)
+    :Sistem memproses data transfer;
+    :Sistem menyimpan data transfer ke database;
+    :Notifikasi: "Transfer berhasil disimpan";
+endif
+
+stop
+@enduml

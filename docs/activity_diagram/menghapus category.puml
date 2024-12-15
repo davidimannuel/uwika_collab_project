@@ -1,0 +1,21 @@
+@startuml
+title Activity Diagram - Menghapus Kategori
+start
+
+:User mengklik menu Category;
+:Sistem mengambil semua data kategori dari database;
+:Sistem menampilkan semua data kategori ke User;
+
+:User memilih kategori yang ingin dihapus;
+:Sistem mencoba menghapus data kategori;
+
+if (Database error?) then (Ya)
+    :Error database: "Penghapusan gagal";
+    stop
+else (Tidak)
+    :Sistem berhasil menghapus data kategori;
+    :Notifikasi: "Data berhasil dihapus";
+endif
+
+stop
+@enduml

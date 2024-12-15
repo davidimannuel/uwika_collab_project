@@ -1,0 +1,29 @@
+@startuml
+title Activity Diagram - Proses Registrasi
+start
+
+:User memasukkan data registrasi 
+(nama, email, password, konfirmasi password);
+
+if (Email sudah digunakan?) then (Ya)
+    :"The email has already been taken";
+    stop
+else (Tidak)
+endif
+
+if (Password dan konfirmasi tidak cocok?) then (Ya)
+    :"The password field confirmation does not match";
+    stop
+else (Tidak)
+endif
+
+:Sistem memvalidasi data berhasil;
+:Sistem memproses data;
+
+:Sistem menyimpan data ke database
+(nama, email, password dengan hash);
+
+:Registrasi berhasil;
+
+stop
+@enduml

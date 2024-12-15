@@ -83,6 +83,9 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
       Gate::authorize('delete-category', $category);
+      if ($category->transactionCategories()->limit(1)->count() > 0) {
+        return redirect(route('categories.index'))->with('alert',"cannot delete $category->name, because already linked to transactions");
+      }
       $category->delete();
       return redirect(route('categories.index'));
     }
