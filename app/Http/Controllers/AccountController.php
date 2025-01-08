@@ -38,11 +38,12 @@ class AccountController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {      
-      $account = Account::create([
-        'user_id' => Auth::id(),
-        'name' => $request->input('name'),
+    { 
+      $attributes = $request->validate([
+        'name' => ['required'],
       ]);
+      $attributes['user_id'] = Auth::id();     
+      $account = Account::create($attributes);
       
       return redirect(route('accounts.index'));
     }
